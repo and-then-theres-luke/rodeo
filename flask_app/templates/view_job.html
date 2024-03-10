@@ -40,6 +40,11 @@
                     <p>{{one_chore.location}}</p>
                 </div>
             </div>
+            {% if one_chore.isClaimed == False%}
+            <a href="">Claim Chore!</a>
+            {% else %} {% if one_chore.owner_id == session['user_id'] %}
+            <a href="">Release Chore!</a>
+            {% endif %} {% endif %}
         </div>
     </body>
 </html>
