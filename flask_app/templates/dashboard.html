@@ -13,57 +13,53 @@
         <title>Dashboard</title>
     </head>
     <body>
-        <nav>
-            <h1>Welcome, {{one_user.first_name}}!</h1>
-            <a href="">Logout</a>
-            {% if one_user.isParent == True %}
-            <a href="">Add a Job</a>
-            {% endif %}
-        </nav>
-        <main>
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <table class="table">
-                            <thead>
-                                <th>Job</th>
-                                <th>Location</th>
-                                <th>Action</th>
-                            </thead>
-                            <tbody>
-                                {% for chore in all_chores%}
-                                <td>{{chore.title}}</td>
-                                <td>{{chore.location}}</td>
-                                <td>
-                                    <a href="#">view</a>
-                                    <a href="#">claim</a>
-                                    {% if chore.user_id == one_user.id %}
-                                    <a href="#">edit</a>
-                                    <a href="#">delete</a>
-                                    {% endif %}
-                                </td>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col">
-                        <table class="table">
-                            <thead>
-                                <th>My Jobs</th>
-                                <th>Actions</th>
-                            </thead>
-                            <tbody>
-                                {% for chore in one_user.chores%}
-                                <td>{{chore.title}}</td>
-                                <td>
-                                    <a href="">view</a> |
-                                    <a href="">complete</a>
-                                </td>
-                            </tbody>
-                        </table>
+        <div class="container">
+            <div class="row">
+                <h1>Rodeo</h1>
+            </div>
+            <div class="row">
+                <p>Welcome back, {{one_user.first_name}}.</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                {% for chore in all_chores %} {% if chore.is_claimed == False %}
+                <div class="card col-4">
+                    <div class="card-body">
+                        <h5>{{chore.title}}</h5>
+                        <p class="card-text">{{chore.description}}</p>
+                        <p class="card-text">{{chore.location}}</p>
+                        <button class="btn btn-secondary">Claim!</button>
                     </div>
                 </div>
+                {% endif %} {% endfor %}
             </div>
-        </main>
+            <div class="col col-6"></div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <th>Job</th>
+                        <th>Location</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                        {% for chore in all_chores%}
+                        <td>{{chore.title}}</td>
+                        <td>{{chore.location}}</td>
+                        <td>
+                            <a href="#">view</a>
+                            <a href="#">claim</a>
+                            {% if chore.user_id == one_user.id %}
+                            <a href="#">edit</a>
+                            <a href="#">delete</a>
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </body>
 </html>
