@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        <link
+            rel="stylesheet"
+            href="../static/css/bootstrap.css"
+        />
+        <title>Add a Job!</title>
+    </head>
+    <body>
+        <h1>Add a Job!</h1>
+        <form action="">
+            <input
+                type="hidden"
+                name="user_id"
+                value="{{session['user_id']}}"
+            />
+            <label for=""
+                >Title
+                <input
+                    type="text"
+                    name="title"
+            /></label>
+            <label for=""
+                >Description
+                <input
+                    type="textarea"
+                    name="description"
+            /></label>
+            <label for=""
+                >Location
+                <input
+                    type="text"
+                    name="location"
+            /></label>
+            <button class="btn btn-primary">Submit</button>
+        </form>
+    </body>
+</html>
