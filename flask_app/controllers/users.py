@@ -20,13 +20,20 @@ def create_new_user():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if 'user_id' not in session:
+        return redirect('login.html')
+    return redirect("/dashboard")
 
 
-@app.get('/#')
-def display_user_page():
-    print(session, "This is session") 
-    if 'user_id' not in session: return redirect('/')
+@app.route('/login')
+def login():
+    if 'user_id' not in session:
+        return render_template("login.html")
+    return redirect("/dashboard")
+
+@app.get('/dashboard')
+def display_dashboard():
+    if 'user_id' not in session: return redirect('/login')
     user_data = user.User.get_user_by_id(session['user_id'])
     # you will need a function to get info from the joining table here
     return render_template('#.html', user = user_data, )
