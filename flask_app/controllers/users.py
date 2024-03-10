@@ -6,12 +6,14 @@ from flask_app.models import user # import entire file, rather than class, to av
 
 # Create Users Controller
 
+
 @app.post('/user/register')
 def create_new_user():
-    print(request.form, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!122")
     if user.User.create_new_user(request.form):
         return redirect('/#') # redirect to the show page
     return redirect('/')
+
+
 
 
 # Read Users Controller
@@ -19,6 +21,7 @@ def create_new_user():
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.get('/#')
 def display_user_page():
@@ -62,6 +65,15 @@ def log_user_in():
 def log_user_out():
     session.clear()
     return redirect('/')
+
+
+# Update Users Controller
+
+
+
+# Delete Users Controller
+
+
 
 # Notes:
 # 1 - Use meaningful names

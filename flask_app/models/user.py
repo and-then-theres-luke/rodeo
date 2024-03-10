@@ -1,16 +1,24 @@
 
 from flask_app import app
 from flask_app.config.mysqlconnection import connectToMySQL
+
 from flask import flash, session, request
 import re
 from flask_bcrypt import Bcrypt
+
+from flask import flash, session
+# import re
+# from flask_bcrypt import Bcrypt
+
 # bcrypt = Bcrypt(app)
 # The above is used when we do login registration, flask-bcrypt should already be in your env check the pipfile
 
 # Remember 'fat models, skinny controllers' more logic should go in here rather than in your controller. Your controller should be able to just call a function from the model for what it needs, ideally.
 
 class User:
+
     db = "chore_tracker" 
+
     def __init__(self, data):
         self.id = data['id']
         self.first_name = data['first_name']
@@ -25,6 +33,7 @@ class User:
 
 
     # Create Users Models
+
     @classmethod
     def create_new_user(cls,user_data):
         if not cls.validate_user_on_register(user_data): return False
@@ -78,7 +87,16 @@ class User:
             return cls(result[0])
         return False
 
+
+
+
+    # Read Users Models
+
+
+
+
     # Update Users Models
+
 
 
 
@@ -156,3 +174,4 @@ class User:
             is_valid = False
         return is_valid
             
+
