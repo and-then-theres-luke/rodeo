@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        <link
+            rel="stylesheet"
+            href="../static/css/bootstrap.css"
+        />
+        <title>View a Job!</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1>{{one_chore.title}}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h2 class="h4">
+                        Created on {{one_chore.created_at}} by
+                        {{one_chore.creator['first_name']}}
+                        {{one_chore.creator['last_name']}}
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Description</p>
+                    <p>{{one_chore.description}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Location</p>
+                    <p>{{one_chore.location}}</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
