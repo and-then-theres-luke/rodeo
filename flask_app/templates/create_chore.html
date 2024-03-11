@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/create/chore" method="post">
+        <label>
+            Title:
+            <input type="text" name="title">
+        </label>
+        <label>
+            Description:
+            <input type="text" name="description">
+        </label>
+        <label>
+            Location:
+            <input type="text" name="location">
+        </label>
+        <label>
+            Day:
+            <input type="date" name="day">
+        </label>
+        <label>Completed:
+            <input type="radio" name="completed">
+        </label>
+        <label>Is claimed:
+            <input type="radio" name="is_claimed">
+        </label>
+        <input type="submit" value="submit">
+    </form>
+</body>
+</html>

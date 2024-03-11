@@ -1,17 +1,17 @@
 from flask_app import app
 from flask import render_template, redirect, request, session
-from flask_app.models import user # import entire file, rather than class, to avoid circular imports
+from flask_app.models import parent # import entire file, rather than class, to avoid circular imports
 # As you add model files add them the the import above
 # This file is the second stop in Flask's thought process, here it looks for a route that matches the request
 
 # Create Users Controller
 
 
-@app.post('/user/register')
-def create_new_user():
-    if user.User.create_new_user(request.form):
+@app.post('/parent/register')
+def create_new_parent():
+    if parent.Parent.create_new_parent(request.form):
         return redirect('/#') # redirect to the show page
-    return redirect('/')
+    return redirect('/#')
 
 
 
@@ -24,17 +24,12 @@ def index():
         return redirect('login.html')
     return redirect("/dashboard")
 
+@app.get('/#')
+def display_home_page():
+    print(session, "This is session") 
+    if 'user_id' not in session: return redirect('/')
+    user_data = parent.User.get_user_by_id(session['user_id'])
 
-@app.route('/login')
-def login():
-    if 'user_id' not in session:
-        return render_template("login.html")
-    return redirect("/dashboard")
-
-@app.get('/dashboard')
-def display_dashboard():
-    if 'user_id' not in session: return redirect('/login')
-    user_data = user.User.get_user_by_id(session['user_id'])
     # you will need a function to get info from the joining table here
     return render_template('#.html', user = user_data, )
     
@@ -45,7 +40,7 @@ def display_dashboard():
 @app.post('/user/update')
 def update_user_account():
     if 'user_id' not in session: return redirect('/')
-    user.User.update_user_info(request.form)
+    parent.User.update_user_info(request.form)
     return redirect('/user/account')
 
 # Delete Users Controller
@@ -53,7 +48,7 @@ def update_user_account():
 @app.post('/user/account/delete')
 def delete_user_account():
     if 'user_id' not in session: return redirect('/')
-    user.User.delete_user_account(session['user_id'])
+    parent.User.delete_user_account(session['user_id'])
     session.clear()
     return redirect('/')
 
@@ -61,7 +56,7 @@ def delete_user_account():
 
 @app.post('/user/login')
 def log_user_in():
-    if user.User.log_user_in(request.form):
+    if parent.Parent.log_user_in(request.form):
         return redirect('/#') # redirect to the show page
     return redirect('/')
 
