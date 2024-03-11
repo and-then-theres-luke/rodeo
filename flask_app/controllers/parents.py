@@ -20,14 +20,16 @@ def create_new_parent():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
-
+    if 'user_id' not in session:
+        return redirect('login.html')
+    return redirect("/dashboard")
 
 @app.get('/#')
 def display_home_page():
     print(session, "This is session") 
     if 'user_id' not in session: return redirect('/')
     user_data = parent.User.get_user_by_id(session['user_id'])
+
     # you will need a function to get info from the joining table here
     return render_template('#.html', user = user_data, )
     

@@ -10,20 +10,153 @@
             rel="stylesheet"
             href="../static/css/bootstrap.css"
         />
+        <script
+            src="../static/js/bootstrap.min.js"
+            defer
+        ></script>
         <title>Rodeo</title>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <div class="col">
+        <div class="container-sm justify-content-center align-self-center">
+            <div class="row justify-content-center">
+                <div class="col col-sm-8 text-center">
                     <h1>Welcome to Rodeo</h1>
                     <h2 class="h4">Is this your first rodeo?</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <button class="btn btn-primary">Yes</button>
-                    <button class="btn btn-primary">No</button>
+                    <div class="col text-center">
+                        <button
+                            class="btn btn-primary col-12 mb-2"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#register"
+                        >
+                            Yes
+                        </button>
+                        <div
+                            class="collapse"
+                            id="register"
+                        >
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <form action="">
+                                        <div class="mb-3">
+                                            <label
+                                                for="first_name"
+                                                class="form-label"
+                                                >First Name</label
+                                            >
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="first_name"
+                                                name="first_name"
+                                                placeholder="John"
+                                            />
+                                            <label
+                                                for="last_name"
+                                                class="form-label"
+                                                >Last Name</label
+                                            >
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="last_name"
+                                                name="last_name"
+                                                placeholder="Wayne"
+                                            />
+                                            <label
+                                                for="email"
+                                                class="form-label"
+                                                >Email address</label
+                                            >
+                                            <input
+                                                type="email"
+                                                class="form-control"
+                                                id="email"
+                                                name="email"
+                                                placeholder="name@example.com"
+                                            />
+                                            <label
+                                                for="password"
+                                                class="form-label"
+                                                >Password</label
+                                            >
+                                            <input
+                                                type="password"
+                                                class="form-control"
+                                                id="password"
+                                                name="password"
+                                            />
+                                            <label
+                                                for="confirm_password"
+                                                class="form-label"
+                                                >Confirm Password</label
+                                            >
+                                            <input
+                                                type="password"
+                                                class="form-control mb-2"
+                                                id="confirm_password"
+                                                name="confirm_password"
+                                            />
+                                            <button
+                                                class="btn btn-warning col-4"
+                                            >
+                                                Register!
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            class="btn btn-primary col-12 mb-2"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#login"
+                        >
+                            No
+                        </button>
+                        <div
+                            class="collapse"
+                            id="login"
+                        >
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="mb-2">
+                                        <form
+                                            action="/user/login"
+                                            method="post"
+                                        >
+                                            <label
+                                                for="login_email"
+                                                class="form-label"
+                                                >Email</label
+                                            >
+                                            <input
+                                                type="email"
+                                                class="form-control"
+                                                id="login_email"
+                                                name="email"
+                                            />
+                                            <label
+                                                for="login_password"
+                                                class="form-label"
+                                                >Password</label
+                                            >
+                                            <input
+                                                type="login_email"
+                                                class="form-control"
+                                                id="login_email"
+                                                name="email"
+                                            />
+                                            <button
+                                                class="btn btn-warning col-4"
+                                            >
+                                                Log In!
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
