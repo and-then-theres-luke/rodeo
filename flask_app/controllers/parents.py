@@ -6,101 +6,77 @@ from flask_app.models import parent # import entire file, rather than class, to 
 
 # Create Users Controller
 
-
 @app.post('/parent/register')
-def create_new_parent():
+def create_new_parent_frontend():
     if parent.Parent.create_new_parent(request.form):
-        return redirect('/#') # redirect to the show page
-    return redirect('/#')
-
-
-
+        return redirect('/dashboard')
+    return redirect('/login')
 
 # Read Users Controller
 
 @app.route('/')
 def index():
     if 'user_id' not in session:
-        return redirect('login.html')
+        return redirect('/login')
     return redirect("/dashboard")
 
-@app.get('/#')
-def display_home_page():
-    print(session, "This is session") 
-    if 'user_id' not in session: return redirect('/')
-    user_data = parent.User.get_user_by_id(session['user_id'])
-
-    # you will need a function to get info from the joining table here
-    return render_template('#.html', user = user_data, )
+@app.get('/dashboard')
+def display_dashboard_frontend():
+    if 'user_id' not in session: 
+        return redirect('/')
+    if session['is_parent'] == True:
+        one_user = parent.Parent.get_parent_by_id(session['user_id'])
+    else:
+        one_user = child.Child.get_child_by_id(session['user_id'])
+    return render_template('dashboard.html', one_user = one_user )
     
+### login user routes
 
+@app.route('/login')
+def login_frontend():
+    return render_template('login.html')
 
-# Update Users Controller
-
-@app.post('/user/update')
-def update_user_account():
-    if 'user_id' not in session: return redirect('/')
-    parent.User.update_user_info(request.form)
-    return redirect('/user/account')
-
-# Delete Users Controller
-
-@app.post('/user/account/delete')
-def delete_user_account():
-    if 'user_id' not in session: return redirect('/')
-    parent.User.delete_user_account(session['user_id'])
-    session.clear()
-    return redirect('/')
-
-# login user
-
-@app.post('/user/login')
-def log_user_in():
-    if parent.Parent.log_user_in(request.form):
-        return redirect('/#') # redirect to the show page
-    return redirect('/')
-
+@app.post('/login/process')
+def login_process_frontend():
+    if not parent.Parent.get_parent_by_email(request.form['email']):
+        if not child.Child.get_child_by_email(request.form['email']):
+            return redirect('/login')
+        else:
+            session['is_parent'] = False
+            return redirect('/dashboard')
+    else:
+        session['is_parent'] = True
+        return redirect('/dashboard')
 
 # log user out
 
-@app.route('/user/logout')
-def log_user_out():
+@app.route('/logout')
+def logout_frontend():
     session.clear()
-    return redirect('/')
+    return redirect('/login')
 
+# Update Parent Controller
 
-# Update Users Controller
+@app.post('/parent/update')
+def update_parent_frontend():
+    if 'user_id' not in session: 
+        return redirect('/login')
+    return redirect('/parent/account')
 
+@app.post('/parent/update/process')
+def update_parent_process_frontend():
+    if 'user_id' not in session: 
+        return redirect('/login')
+    if session['user_id'] != request.form['user_id']:
+        return redirect('/login')
+    parent.Parent.update_parent_info(request.form)
+    return redirect('/parent/account')
 
 
 # Delete Users Controller
-
-
-
-# Notes:
-# 1 - Use meaningful names
-# 2 - Do not overwrite function names
-# 3 - No matchy, no worky
-# 4 - Use consistent naming conventions 
-# 5 - Keep it clean
-# 6 - Test every little line before progressing
-# 7 - READ ERROR MESSAGES!!!!!!
-# 8 - Error messages are found in the browser and terminal
-
-
-
-
-# How to use path variables:
-# @app.route('/<int:id>')                                   The variable must be in the path within angle brackets
-# def index(id):                                            It must also be passed into the function as an argument/parameter
-#     user_info = user.User.get_user_by_id(id)              The it will be able to be used within the function for that route
-#     return render_template('index.html', user_info)
-
-# Converter -	Description
-# string -	Accepts any text without a slash (the default).
-# int -	Accepts integers.
-# float -	Like int but for floating point values.
-# path 	-Like string but accepts slashes.
-
-# Render template is a function that takes in a template name in the form of a string, then any number of named arguments containing data to pass to that template where it will be integrated via the use of jinja
-# Redirect redirects from one route to another, this should always be done following a form submission. Don't render on a form submission.
+@app.post('/parent/account/delete')
+def delete_user_account_frontend():
+    if 'user_id' not in session: return redirect('/')
+    parent.Parent.delete_parent_account(session['user_id'])
+    session.clear()
+    return redirect('/')
