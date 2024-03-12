@@ -49,6 +49,7 @@ class Parent:
         print(user_id)
         session['user_id'] = user_id
         session['first_name'] = user_data['first_name']
+        session['is_parent'] = True
         return user_id
 
 
@@ -109,12 +110,13 @@ class Parent:
     # login
     
     @classmethod
-    def log_user_in(cls,data):
+    def log_parent_in(cls,data):
         this_user = cls.get_parent_by_email(data['email'])
         if this_user:
             if bcrypt.check_password_hash(this_user.password, data['password']):
                 session['user_id'] = this_user.id
                 session['first_name'] = this_user.first_name
+                session['is_parent'] = True
                 return True
         flash('Invalid email or password')
         return False

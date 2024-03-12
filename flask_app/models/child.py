@@ -2,6 +2,8 @@ from flask_app import app
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash, session, request
 import re
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt(app)
 
 
 class Child:
@@ -101,6 +103,18 @@ class Child:
             ;'''
         connectToMySQL(cls.db).query_db(query, data)
         return 
+
+    @classmethod
+    def log_child_in(cls,data):
+        this_user = cls.get_child_by_email(data['email'])
+        if this_user:
+            if bcrypt.check_password_hash(this_user.password, data['password']):
+                session['user_id'] = this_user.id
+                session['first_name'] = this_user.first_name
+                session['is_parent'] = False
+                return True
+        flash('Invalid email or password')
+        return False
 
 
     # validations
