@@ -12,68 +12,67 @@
         />
         <title>Dashboard</title>
     </head>
-    <body>
-        <div class="container">
+    <body class="container text-bg-danger">
+        <div class="container text-bg-danger">
             <div class="row">
                 <h1>Rodeo</h1>
             </div>
             <div class="row">
                 <p>Welcome back, {{one_user.first_name}}.</p>
             </div>
-        </div>
-        <div class="container bg-primary">
-            <div class="row">
-                {% for chore in all_chores %} {% if chore.is_claimed == False %}
-                <div class="card col-md-4 col-lg-3 gap-2">
-                    <div class="card-body">
-                        <h5>{{chore.title}}</h5>
-                        <p class="card-text">{{chore.description}}</p>
-                        <p class="card-text">{{chore.location}}</p>
-                        <button class="btn btn-secondary">Claim!</button>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a
+                        class="nav-link active"
+                        href="/dashboard"
+                        >Dashboard</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link link-light"
+                        href="/chores"
+                        >Chores</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link link-light"
+                        href="/children"
+                        >Children</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link link-light"
+                        href="/logout"
+                        >Logout</a
+                    >
+                </li>
+            </ul>
+            <div class="container">
+                <div class="row mt-2">
+                    {% for chore in all_chores %}
+                    <div class="card col-md-4 col-lg-3 gap-2 text-bg-light">
+                        <div class="card-body">
+                            <h5>{{chore.title}}</h5>
+                            <p class="card-text">{{chore.description}}</p>
+                            <p class="card-text">{{chore.location}}</p>
+                            <p class="card-text">
+                                Assigned to: {{chore.owner.first_name}}
+                            </p>
+                            {% if one_user.is_parent == True %}
+                            <p>
+                                <a class="btn btn-primary">View</a>
+                                <a class="btn btn-danger">Delete</a>
+                            </p>
+                            <p></p>
+                            {% else %}
+                            <p><a class="btn btn-primary">View</a></p>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-                {% endif %} {% endfor %}
-            </div>
-            <div class="col col-6"></div>
-            <div class="row">
-                <div class="col">
-                    <table class="table">
-                        <thead>
-                            <th>Job</th>
-                            <th>Location</th>
-                            <th>Action</th>
-                        </thead>
-                        <tbody>
-                            {% for chore in all_chores%}
-                            <td>{{chore.title}}</td>
-                            <td>{{chore.location}}</td>
-                            <td>
-                                <a
-                                    class="btn btn-primary"
-                                    href="#"
-                                    >view</a
-                                >
-                                <a
-                                    class="btn btn-primary"
-                                    href="#"
-                                    >claim</a
-                                >
-                                {% if chore.user_id == one_user.id %}
-                                <a
-                                    class="btn btn-success"
-                                    href="#"
-                                    >edit</a
-                                >
-                                <a
-                                    class="btn btn-danger"
-                                    href="#"
-                                    >delete</a
-                                >
-                                {% endif %}
-                            </td>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    {% endfor %}
                 </div>
             </div>
         </div>
