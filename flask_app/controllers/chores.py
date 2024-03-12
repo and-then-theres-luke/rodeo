@@ -33,6 +33,8 @@ def chore_Home_page(chore_id):
         return redirect('/dashboard')
     return render_template('chores_home.html')
 
+
+
 # Update Chores Controller
 
 @app.post("/chore/update/process")
@@ -49,6 +51,8 @@ def chore_update_process_frontend():
 
 
 # Delete Chores Controller
+
+
 
 
 
