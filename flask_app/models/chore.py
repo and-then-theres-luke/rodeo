@@ -87,7 +87,7 @@ class Chore:
         return result[0]
     
     @classmethod
-    def get_chore_by_parent_id(cls,id):
+    def get_all_chores_by_parent_id(cls,id):
         data = {'id' : id}
         query = '''
             SELECT *
