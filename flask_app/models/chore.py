@@ -42,7 +42,9 @@ class Chore:
             VALUES
                 (%(title)s,%(description)s,%(location)s,%(day)s,%(completed)s,%(is_claimed)s,%(user_id)s,%(child_id)s)
             ;'''
+
         chore_id = connectToMySQL(cls.db).query_db(query, query_data)
+
         return chore_id
     
 
@@ -114,7 +116,7 @@ class Chore:
         connectToMySQL(cls.db).query_db(query, data)
         return 
 
-# CHORES VALIDATIONS !!!!(TO BE COMPLETED)!!!!
+# CHORES VALIDATIONS 
     @classmethod
     def chore_validations(cls, data):
         is_valid = True
