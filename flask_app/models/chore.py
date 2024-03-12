@@ -22,6 +22,19 @@ class Chore:
 # CREATE CHORE MODELS
     @classmethod
     def create_chore(cls,data):
+        if 'child_id' not in data:
+            child_id = 0
+        else:
+            child_id = data['child_id']
+        query_data = {'title' : data['title'],
+                        'description' : data['description'],
+                        'location' : data['location'],
+                        'day' : data['day'],
+                        'completed' : data['completed'],
+                        'is_claimed' : data['is_claimed'],
+                        'user_id' : data['user_id'],
+                        'child_id' : child_id
+                        }
         query = ''' 
             INSERT INTO 
             chores
@@ -29,14 +42,13 @@ class Chore:
             VALUES
                 (%(title)s,%(description)s,%(location)s,%(day)s,%(completed)s,%(is_claimed)s,%(user_id)s,%(child_id)s)
             ;'''
-        chore_id = connectToMySQL(cls.db).query_db(query,data)
+        chore_id = connectToMySQL(cls.db).query_db(query, query_data)
         return chore_id
     
 
 # READ CHORE MODELS
     @classmethod
     def get_all_chores(cls):
-
         query = '''
             SELECT *
             FROM chores
@@ -118,8 +130,5 @@ class Chore:
         if data['day']:
             is_valid = False
             flash("Day required")
-        # if data['completed'] == 0:
-        #     is_valid = False
-        #     flash("Field cannot be empty")
         return is_valid
         
