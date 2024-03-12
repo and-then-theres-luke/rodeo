@@ -54,7 +54,7 @@ class Parent:
 
     # Read Users Models
     @classmethod
-    def get_user_by_id(cls,data):
+    def get_parent_by_id(cls,data):
         id = {'id': data}
         query = """
             SELECT *
@@ -67,7 +67,7 @@ class Parent:
 
 
     @classmethod
-    def get_user_by_email(cls,data):
+    def get_parent_by_email(cls,data):
         email= {'email' : data}
         print(data, "data")
         print(email, "email")
