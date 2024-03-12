@@ -36,6 +36,7 @@ class Chore:
 # READ CHORE MODELS
     @classmethod
     def get_all_chores(cls):
+
         query = '''
             SELECT *
             FROM chores
@@ -44,6 +45,22 @@ class Chore:
         return results
     
 
+    @classmethod
+    def get_chores_assigned_to_child(cls, id):
+        data = {"id" : id}
+        query = ''' 
+            SELECT *
+            FROM chores
+            JOIN children ON chores.child_id = child.id
+            WHERE child.id = %(id)s
+            ;'''
+        results = connectToMySQL(cls.db).query_db(query, data)
+        print(results)
+        chores = []
+        for result in results:
+            chores.append(cls(result))
+        return chores
+    
     @classmethod
     def get_chore_by_id(cls,id):
         data = {'id' : id }
@@ -98,10 +115,10 @@ class Chore:
         if len(data['location']) < 1:
             is_valid = False
             flash("Location must not be empty")
-        # if not data['day']:
-        #     is_valid = False
-        #     flash("Day required")
-        # if data['completed'] != 0:
+        if data['day']:
+            is_valid = False
+            flash("Day required")
+        # if data['completed'] == 0:
         #     is_valid = False
         #     flash("Field cannot be empty")
         return is_valid
