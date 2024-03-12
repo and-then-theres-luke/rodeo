@@ -7,32 +7,39 @@ from flask_app.models import chore, parent # import entire file, rather than cla
 # Create Chores Controller
 
 
-@app.post('/create/chore')
-def create_chore_process():
-    if 'user_id' not in session: return redirect('/')
-    chore.Chore.create_chore(request.form)
+@app.route('/chore/create')
+def create_chore_frontend():
+    if 'user_id' not in session: 
+        return redirect('/')
     return redirect('/chore/page')
 
-@app.get('/create/chore')
-def create_chore_page():
-    if 'user_id' not in session: return redirect('/')
-    return render_template('create_chore.html')
+@app.post('/chore/create/process')
+def create_chore_process_frontend():
+    if 'user_id' not in session: 
+        return redirect('/')
+    if not chore.Chore.create_chore(request.form):
+        return redirect('/chore/create')
+    return redirect('/dashboard')
 
 
 # Read Chores Controller
     
-@app.route('/chore/page')
-def chore_Home_page():
+@app.route('/chore/view/<int:chore_id>')
+def chore_Home_page(chore_id):
+    if 'user_id' not in session: 
+        return redirect('/')
+    one_chore = chore.Chore.get_chore_by_id(chore_id)
+    if one_chore.parent_id != session['user_id']:
+        return redirect('/dashboard')
     return render_template('chores_home.html')
-
-
-
-
-
 
 # Update Chores Controller
 
-
+@app.post("/chore/update/process")
+def chore_update_process_frontend():
+    if 'user_id' not in session: 
+        return redirect('/')
+    chore.Chore.delete_chore(request.form['chore_id'])
 # Delete Chores Controller
 
 
