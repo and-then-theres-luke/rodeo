@@ -29,7 +29,7 @@ def display_dashboard_frontend():
         one_user = parent.Parent.get_parent_by_id(session['user_id'])
     else:
         one_user = child.Child.get_child_by_id(session['user_id'])
-    all_chores = chore.Chore.get_all_chores_by_parent_id()
+    all_chores = chore.Chore.get_chore_by_parent_id()
     return render_template('dashboard.html', one_user = one_user, all_chores = all_chores )
     
 ### login user routes
