@@ -1,6 +1,6 @@
 from flask_app import app
 from flask import render_template, redirect, request, session
-from flask_app.models import parent # import entire file, rather than class, to avoid circular imports
+from flask_app.models import parent, child # import entire file, rather than class, to avoid circular imports
 # As you add model files add them the the import above
 # This file is the second stop in Flask's thought process, here it looks for a route that matches the request
 
