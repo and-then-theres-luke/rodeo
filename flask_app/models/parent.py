@@ -30,7 +30,7 @@ class Parent:
 
     @classmethod
     def create_new_parent(cls,user_data):
-        if not cls.validate_user_on_register(user_data): return False
+        if not cls.validate_parent_on_register(user_data): return False
         user_data = user_data.copy()
         user_data['password'] = bcrypt.generate_password_hash(user_data['password'])
         query = """
@@ -58,7 +58,7 @@ class Parent:
         id = {'id': data}
         query = """
             SELECT *
-            FROM users
+            FROM parents
             WHERE id = %(id)s;"""
         results = connectToMySQL(cls.db).query_db(query,id)
         if results:
@@ -100,7 +100,7 @@ class Parent:
         id = {'id' : data}
         query = """
             DELETE FROM
-            users
+            parents
             WHERE id = %(id)s;
             """
         return connectToMySQL(cls.db).query_db(query,id)
@@ -110,7 +110,7 @@ class Parent:
     
     @classmethod
     def log_user_in(cls,data):
-        this_user = cls.get_user_by_email(data['email'])
+        this_user = cls.get_parent_by_email(data['email'])
         if this_user:
             if bcrypt.check_password_hash(this_user.password, data['password']):
                 session['user_id'] = this_user.id
@@ -138,7 +138,7 @@ class Parent:
     # validations
     
     @classmethod
-    def validate_user_on_register(cls, data):
+    def validate_parent_on_register(cls, data):
         EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
         is_valid = True
         if len(data['first_name']) < 1:
@@ -162,7 +162,7 @@ class Parent:
         if not data["password"] == data["confirm_password"]:
             flash("Your password must match confirm password.")
             is_valid = False
-        if cls.get_user_by_email(data['email']):
+        if cls.get_parent_by_email(data['email']):
             flash('There is already an account with that email')
             is_valid = False
         return is_valid
