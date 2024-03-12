@@ -2,6 +2,7 @@
 from flask_app import app
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash, session, request
+from flask_app.models import parent, child
 
 
 class Chore:
@@ -17,6 +18,7 @@ class Chore:
         self.updated_at = data['updated_at']
         self.user_id = data['user_id']
         self.child_id = data['child_id']
+        self.parent_user = None
 
 
 # CREATE CHORE MODELS
@@ -42,9 +44,7 @@ class Chore:
             VALUES
                 (%(title)s,%(description)s,%(location)s,%(day)s,%(completed)s,%(is_claimed)s,%(user_id)s,%(child_id)s)
             ;'''
-
         chore_id = connectToMySQL(cls.db).query_db(query, query_data)
-
         return chore_id
     
 
@@ -65,8 +65,8 @@ class Chore:
         query = ''' 
             SELECT *
             FROM chores
-            LEFT JOIN children ON chores.child_id = child.id
-            WHERE child.id = %(id)s
+            LEFT JOIN children ON chores.child_id = children.id
+            WHERE children.id = %(id)s
             ;'''
         results = connectToMySQL(cls.db).query_db(query, data)
         print(results)
@@ -86,6 +86,30 @@ class Chore:
         result = connectToMySQL(cls.db).query_db(query,data)
         return result[0]
     
+    @classmethod
+    def get_chore_by_parent_id(cls,id):
+        data = {'id' : id}
+        query = '''
+            SELECT *
+            FROM chores
+            LEFT JOIN parents ON chores.parent_id = parents.id
+            WHERE parents.id = %(id)s
+            ;'''
+        results = connectToMySQL(cls.db).query_db(query, data)
+        this_parents_recipes = []
+        for result in results:
+            these_chores = cls(result)
+            these_chores.parent_user = parent.Parent({
+                'id' : result['parents.id'],
+                'first_name' : result['first_name'],
+                'last_name' : result['last_name'],
+                'email' : result['email'],
+                'password' : result['password'],
+                'created_at' : result['parents.created_at'],
+                'updated_at' : result['parents.updated_at']
+            })
+            this_parents_recipes.append(these_chores)
+        return this_parents_recipes
 
 # UPDATE CHORE MODELS
     @classmethod
