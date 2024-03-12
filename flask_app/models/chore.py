@@ -94,9 +94,12 @@ class Chore:
             FROM chores
             LEFT JOIN parents ON chores.parent_id = parents.id
             WHERE parents.id = %(id)s
+            FROM children
+            LEFT JOIN chores ON children.chore_id = chores.id
+            WHERE children.id = %(id)s
             ;'''
         results = connectToMySQL(cls.db).query_db(query, data)
-        this_parents_recipes = []
+        this_parents_chores = []
         for result in results:
             these_chores = cls(result)
             these_chores.parent_user = parent.Parent({
@@ -108,8 +111,8 @@ class Chore:
                 'created_at' : result['parents.created_at'],
                 'updated_at' : result['parents.updated_at']
             })
-            this_parents_recipes.append(these_chores)
-        return this_parents_recipes
+            this_parents_chores.append(these_chores)
+        return this_parents_chores
 
 # UPDATE CHORE MODELS
     @classmethod
