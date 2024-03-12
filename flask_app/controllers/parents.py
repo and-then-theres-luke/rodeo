@@ -9,6 +9,7 @@ from flask_app.models import parent # import entire file, rather than class, to 
 @app.post('/parent/register')
 def create_new_parent_frontend():
     if parent.Parent.create_new_parent(request.form):
+        session['is_parent'] = True
         return redirect('/dashboard')
     return redirect('/login')
 
