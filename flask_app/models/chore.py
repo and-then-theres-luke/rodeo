@@ -42,7 +42,9 @@ class Chore:
             VALUES
                 (%(title)s,%(description)s,%(location)s,%(day)s,%(completed)s,%(is_claimed)s,%(user_id)s,%(child_id)s)
             ;'''
-        chore_id = connectToMySQL(cls.db).query_db(query,query_data)
+
+        chore_id = connectToMySQL(cls.db).query_db(query, query_data)
+
         return chore_id
     
 
@@ -57,6 +59,22 @@ class Chore:
         return results
     
 
+    @classmethod
+    def get_chores_assigned_to_child(cls, id):
+        data = {"id" : id}
+        query = ''' 
+            SELECT *
+            FROM chores
+            LEFT JOIN children ON chores.child_id = child.id
+            WHERE child.id = %(id)s
+            ;'''
+        results = connectToMySQL(cls.db).query_db(query, data)
+        print(results)
+        chores = []
+        for result in results:
+            chores.append(cls(result))
+        return chores
+    
     @classmethod
     def get_chore_by_id(cls,id):
         data = {'id' : id }
@@ -98,7 +116,7 @@ class Chore:
         connectToMySQL(cls.db).query_db(query, data)
         return 
 
-# CHORES VALIDATIONS !!!!(TO BE COMPLETED)!!!!
+# CHORES VALIDATIONS 
     @classmethod
     def chore_validations(cls, data):
         is_valid = True
@@ -111,11 +129,8 @@ class Chore:
         if len(data['location']) < 1:
             is_valid = False
             flash("Location must not be empty")
-        # if not data['day']:
-        #     is_valid = False
-        #     flash("Day required")
-        # if data['completed'] != 0:
-        #     is_valid = False
-        #     flash("Field cannot be empty")
+        if data['day']:
+            is_valid = False
+            flash("Day required")
         return is_valid
         
