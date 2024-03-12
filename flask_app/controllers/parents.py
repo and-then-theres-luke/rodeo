@@ -1,6 +1,6 @@
 from flask_app import app
 from flask import render_template, redirect, request, session
-from flask_app.models import parent, child # import entire file, rather than class, to avoid circular imports
+from flask_app.models import parent, child, chore # import entire file, rather than class, to avoid circular imports
 # As you add model files add them the the import above
 # This file is the second stop in Flask's thought process, here it looks for a route that matches the request
 
@@ -29,7 +29,8 @@ def display_dashboard_frontend():
         one_user = parent.Parent.get_parent_by_id(session['user_id'])
     else:
         one_user = child.Child.get_child_by_id(session['user_id'])
-    return render_template('dashboard.html', one_user = one_user )
+    all_chores = chore.Chore.get_all_chores_by_parent_id()
+    return render_template('dashboard.html', one_user = one_user, all_chores = all_chores )
     
 ### login user routes
 
@@ -39,15 +40,10 @@ def login_frontend():
 
 @app.post('/login/process')
 def login_process_frontend():
-    if not parent.Parent.get_parent_by_email(request.form['email']):
-        if not child.Child.get_child_by_email(request.form['email']):
+    if not parent.Parent.log_parent_in(request.form['email']):
+        if not child.Child.log_child_in(request.form['email']):
             return redirect('/login')
-        else:
-            session['is_parent'] = False
-            return redirect('/dashboard')
-    else:
-        session['is_parent'] = True
-        return redirect('/dashboard')
+    return redirect('/dashboard')
 
 # log user out
 
