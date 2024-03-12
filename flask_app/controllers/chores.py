@@ -7,13 +7,13 @@ from flask_app.models import chore, parent # import entire file, rather than cla
 # Create Chores Controller
 
 
-@app.route('/chore/create')
+@app.route('/chores/create')
 def create_chore_frontend():
     if 'user_id' not in session: 
         return redirect('/')
     return redirect('/chore/page')
 
-@app.post('/chore/create/process')
+@app.post('/chores/create/process')
 def create_chore_process_frontend():
     if 'user_id' not in session: 
         return redirect('/')
@@ -23,9 +23,17 @@ def create_chore_process_frontend():
 
 
 # Read Chores Controller
+
+@app.route('/chores')
+def view_all_chores_frontend():
+    if 'user_id' not in session: 
+        return redirect('/')
+    all_chores = chore.Chore.get_all_chores_by_parent_id(session['user_id'])
+    return render_template('view_all_chores.html', all_chores = all_chores)
     
-@app.route('/chore/view/<int:chore_id>')
-def chore_Home_page(chore_id):
+
+@app.route('/chores/view/<int:chore_id>')
+def view_one_chore_frontend(chore_id):
     if 'user_id' not in session: 
         return redirect('/')
     one_chore = chore.Chore.get_chore_by_id(chore_id)
@@ -37,7 +45,7 @@ def chore_Home_page(chore_id):
 
 # Update Chores Controller
 
-@app.post("/chore/update/process")
+@app.post("/chores/update/process")
 def chore_update_process_frontend():
     if 'user_id' not in session: 
         return redirect('/')
