@@ -51,7 +51,7 @@ class Chore:
         query = ''' 
             SELECT *
             FROM chores
-            JOIN children ON chores.child_id = child.id
+            LEFT JOIN children ON chores.child_id = child.id
             WHERE child.id = %(id)s
             ;'''
         results = connectToMySQL(cls.db).query_db(query, data)
