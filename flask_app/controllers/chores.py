@@ -11,7 +11,9 @@ from flask_app.models import chore, parent # import entire file, rather than cla
 def create_chore_frontend():
     if 'user_id' not in session: 
         return redirect('/')
-    return redirect('/chore/page')
+    if session['is_parent'] == False:
+        return redirect('/')
+    return render_template('create_chore.html')
 
 @app.post('/chores/create/process')
 def create_chore_process_frontend():

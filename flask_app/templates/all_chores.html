@@ -12,8 +12,47 @@
         />
         <title>All Chores</title>
     </head>
-    <body>
-        <div class="container">
+    <body class="container text-bg-danger">
+        <div class="container text-bg-danger">
+            <!-- Header -->
+            <div class="container text-bg-danger">
+                <div class="row">
+                    <h1>Rodeo</h1>
+                </div>
+                <div class="row">
+                    <p>Welcome back, {{one_user.first_name}}.</p>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link link-light"
+                            href="/dashboard"
+                            >Dashboard</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            href="/chores"
+                            >Chores</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link link-light"
+                            href="/children"
+                            >Children</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link link-light"
+                            href="/logout"
+                            >Logout</a
+                        >
+                    </li>
+                </ul>
+                <!-- End Header -->
             <div class="row">
                 <div class="col">
                     <table class="table">
@@ -53,6 +92,13 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    <!-- End Table -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-warning" href="/chores/create">Create Chore</a>
+                    <a class="btn btn-warning" href=""></a>
                 </div>
             </div>
         </div>
