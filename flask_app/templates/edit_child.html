@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        <link
+            rel="stylesheet"
+            href="../../static/css/bootstrap.css"
+        />
+        <title>Rodeo</title>
+    </head>
+    <body class="container text-bg-danger">
+        <!-- Header -->
+        <div class="container text-bg-danger">
+            <div class="row">
+                <h1>Rodeo</h1>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a
+                        class="nav-link link-light"
+                        href="/dashboard"
+                        >Dashboard</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link link-light"
+                        href="/chores"
+                        >Chores</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link active"
+                        href="/children"
+                        >Children</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link link-light"
+                        href="/logout"
+                        >Logout</a
+                    >
+                </li>
+            </ul>
+            <div class="row my-2">
+                <p class="h4">Editing <span class="text-warning">{{one_child.first_name}}</span></p>
+            </div>
+            <div class="row">
+
+                <form
+                    class="form mb-2"
+                    action="/children/edit/process"
+                    method="post"
+                >
+                    <!-- Hidden Inputs -->
+                    <input
+                        type="hidden"
+                        name="parent_id"
+                        value="{{session['user_id']}}"
+                    />
+                    <!-- Name -->
+                    <label
+                        class="form-label"
+                        for="first_name"
+                        >First Name</label
+                    >
+                    <input
+                        class="form-control"
+                        type="text"
+                        name="first_name"
+                        value="{{one_child.first_name}}"
+                        id="first_name"
+                        />
+                        <label
+                        class="form-label"
+                        for="last_name"
+                        >Last Name</label
+                        >
+                        <input
+                        class="form-control"
+                        type="text"
+                        name="last_name"
+                        value="{{one_child.last_name}}"
+                        id="last_name"
+                        />
+                    <!-- Email -->
+                    <label
+                        class="form-label"
+                        for="email"
+                        >Email</label
+                        >
+                        <input
+                        class="form-control"
+                        type="email"
+                        name="email"
+                        value="{{one_child.email}}"
+                        id="email"
+                        />
+                        <!-- Password -->
+                        <label
+                        class="form-label"
+                        for="password"
+                        >Password</label
+                        >
+                        <input
+                        class="form-control"
+                        type="password"
+                        name="password"
+                        id="password"
+                    />
+                    <!-- Confirm Password -->
+                    <label
+                        class="form-label"
+                        for="confirm_password"
+                        >Confirm Password</label
+                    >
+                    <input
+                        class="form-control"
+                        type="password"
+                        name="confirm_password"
+                        id="confirm_password"
+                    />
+                    <p class="text-center">
+                        <button class="btn btn-warning col-3 mt-2">
+                            Save Changes
+                        </button>
+                        <a class="btn btn-secondary col-3 mt-2" href="/children">
+                            Discard Changes
+                        </a>
+                    </p>
+                </form>
+            </div>
+</body>
+</html>

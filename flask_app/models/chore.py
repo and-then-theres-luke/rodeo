@@ -8,6 +8,7 @@ from flask_app.models import parent, child
 class Chore:
     db = "chore_tracker"
     def __init__(self, data):
+        self.id = data['id']
         self.title = data['title']
         self.description = data['description']
         self.location = data['location']
@@ -15,9 +16,9 @@ class Chore:
         self.completed = data['completed']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.user_id = data['user_id']
+        self.parent_id = data['parent_id']
         self.child_id = data['child_id']
-        self.parent_user = None
+        self.parent = None
         self.child_object = None
 
 
