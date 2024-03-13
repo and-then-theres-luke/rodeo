@@ -15,7 +15,7 @@
     <body>
         <h1>Add a Chore!</h1>
 
-        <form action="">
+        <form action="/chores/create/process" method = 'post'>
             <input
                 type="hidden"
                 name="user_id"
@@ -34,11 +34,33 @@
                     name="description"
             /></label>
             <label for=""
+                >Day
+                <input
+                    type="date"
+                    name="day"
+            /></label>
+            <label for=""
+                >Completed
+                <select name="completed">
+                    <option value="0">Not yet</option>
+                    <option value="1">Yes!!!</option>
+                </select></label>
+            <label for=""
                 >Location
                 <input
                     type="text"
                     name="location"
             /></label>
+            <label for=""
+                >Select a child
+                <select name="child_id">
+                    {% for child in children %}
+                    <option value="{{child.id}}">{{child.first_name}}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            
+            
             <button class="btn btn-primary">Submit</button>
         </form>
     </body>

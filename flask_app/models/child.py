@@ -21,14 +21,22 @@ class Child:
 # CREATE CHILDREN MODELS
     @classmethod
     def create_child(cls,data):
+        print(data,"la;ksdg[oadf[oig!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!]]")
+        form_data = {
+            'first_name': data['first_name'],
+            'last_name': data['last_name'],
+            'email': data['email'],
+            'password': data['password'],
+            'parent_id': data['parent_id']
+        }
         query = ''' 
             INSERT INTO 
             children
-                (first_name,last_name,email,password,completed,is_claimed,user_id,child_id)
+                (first_name,last_name,email,password,parent_id)
             VALUES
                 (%(first_name)s,%(last_name)s,%(email)s,%(password)s,%(parent_id)s)
             ;'''
-        child_id = connectToMySQL(cls.db).query_db(query,data)
+        child_id = connectToMySQL(cls.db).query_db(query,form_data)
         return child_id
     
 
@@ -42,6 +50,23 @@ class Child:
         results = connectToMySQL(cls.db).query_db(query)
         return results
     
+    @classmethod
+    def get_all_children_by_parent_id(cls,id):
+        data = {"id": id}
+        query = """
+            SELECT *
+            FROM children
+            JOIN parents
+            ON children.parent_id = parents.id
+            WHERE parent_id = %(id)s;
+        """
+        results = connectToMySQL(cls.db).query_db(query,data)
+        all_children = []
+        if not results:
+            return all_children
+        for row in results:
+            all_children.append(cls(row))
+        return all_children
 
     @classmethod
     def get_child_by_id(cls,id):
@@ -72,8 +97,18 @@ class Child:
         data = {'id' : id}
         query = ''''
             SELECT * 
-            FROM
+            FROM children
+            LEFT JOIN chores
+            ON children.id = chores.child_id
+            WHERE id = %(id)s
             ;'''
+        results = connectToMySQL(cls.db).query_db(query, data)
+        all_chores = []
+        if not results:
+            return all_chores
+        for row in results:
+            all_chores.append(cls(row))
+        return all_chores
     
 
 # UPDATE CHILDREN MODELS
@@ -89,7 +124,8 @@ class Child:
                 email = %(password)s)
             WHERE id = %(id)s
             ;'''
-        return connectToMySQL(cls.db).query_db(query, data)
+        connectToMySQL(cls.db).query_db(query, data)
+        return
     
 # DELETE CHILDREN MODELS
     
