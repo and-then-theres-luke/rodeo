@@ -52,20 +52,21 @@ class Child:
     
     @classmethod
     def get_all_children_by_parent_id(cls,id):
-        print("map this bitch!!!")
         data = {"id": id}
         query = """
             SELECT *
             FROM children
-            LEFT JOIN parents
+            JOIN parents
             ON children.parent_id = parents.id
             WHERE parent_id = %(id)s;
         """
         results = connectToMySQL(cls.db).query_db(query,data)
-        print(results)
-        if results:
-            return results
-        return False
+        all_children = []
+        if not results:
+            return all_children
+        for row in results:
+            all_children.append(cls(row))
+        return all_children
 
     @classmethod
     def get_child_by_id(cls,id):
@@ -96,8 +97,18 @@ class Child:
         data = {'id' : id}
         query = ''''
             SELECT * 
-            FROM
+            FROM children
+            LEFT JOIN chores
+            ON children.id = chores.child_id
+            WHERE id = %(id)s
             ;'''
+        results = connectToMySQL(cls.db).query_db(query, data)
+        all_chores = []
+        if not results:
+            return all_chores
+        for row in results:
+            all_chores.append(cls(row))
+        return all_chores
     
 
 # UPDATE CHILDREN MODELS
@@ -113,7 +124,8 @@ class Child:
                 email = %(password)s)
             WHERE id = %(id)s
             ;'''
-        return connectToMySQL(cls.db).query_db(query, data)
+        connectToMySQL(cls.db).query_db(query, data)
+        return
     
 # DELETE CHILDREN MODELS
     
