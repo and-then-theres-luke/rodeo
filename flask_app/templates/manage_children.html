@@ -65,11 +65,10 @@
                         </thead>
                         <tbody>
                             {% for child in all_my_children %}
-                            <th>{{child.name}}</th>
-                            <th>{{child.stars}}</th>
-                            <th>View Child | Remove Child</th>
+                            <td>{{child.first_name}}{{ child.last_name }}</td>
+                            <td>{{child.stars}}</td>
+                            <td>View Child | Remove Child</td>
                             {% endfor %}
-                            <td></td>
                         </tbody>
                     </table>
                 </div>

@@ -52,6 +52,8 @@ class Child:
     
     @classmethod
     def get_all_children_by_parent_id(cls,id):
+        print("map this bitch!!!")
+        data = {"id": id}
         query = """
             SELECT *
             FROM children
@@ -59,10 +61,10 @@ class Child:
             ON children.parent_id = parents.id
             WHERE parent_id = %(id)s;
         """
-        results = connectToMySQL(cls.db).query_db(query,id)
+        results = connectToMySQL(cls.db).query_db(query,data)
         print(results)
         if results:
-            return cls(results)
+            return results
         return False
 
     @classmethod

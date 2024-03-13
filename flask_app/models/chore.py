@@ -18,23 +18,20 @@ class Chore:
         self.user_id = data['user_id']
         self.child_id = data['child_id']
         self.parent_user = None
+        self.child_object = None
 
 
 # CREATE CHORE MODELS
     @classmethod
     def create_chore(cls,data):
         print(data, "!!!!!!!!!!!!!!!!!!!!!")
-        if 'child_id' not in data:
-            child_id = 0
-        else:
-            child_id = data['child_id']
         query_data = {'title' : data['title'],
                         'description' : data['description'],
                         'location' : data['location'],
                         'day' : data['day'],
                         'completed' : data['completed'],
                         'parent_id' : data['user_id'],
-                        'child_id' : child_id
+                        'child_id' : data['child_id']
                         }
         query = ''' 
             INSERT INTO
@@ -103,27 +100,40 @@ class Chore:
         query = '''
             SELECT * 
             FROM chores
-                LEFT JOIN parents
-                ON parents.id = chores.parent_id
-                LEFT JOIN children
-                ON children.id = chores.child_id
-            WHERE child_id = %(id)s
+            LEFT JOIN parents ON chores.parent_id = chores.id
+            LEFT JOIN children ON chores.child_id = children.id
+            WHERE parents.id = %(id)s
             ;'''
         results = connectToMySQL(cls.db).query_db(query, data)
-        this_parents_chores = []
+        print(results,"RESULTS!!!!!!!!")
         for result in results:
-            these_chores = cls(result)
-            these_chores.parent_user = parent.Parent({
-                'id' : result['parents.id'],
-                'first_name' : result['first_name'],
-                'last_name' : result['last_name'],
-                'email' : result['email'],
-                'password' : result['password'],
-                'created_at' : result['parents.created_at'],
-                'updated_at' : result['parents.updated_at']
-            })
-            this_parents_chores.append(these_chores)
-        return this_parents_chores
+            this_child = cls(result)
+        this_child.child_object = Chore({
+                'id' : result['children.id'],
+                'first_name' : result['children.first_name'],
+                'last_name' : result['children.last_name'],
+                'email' : result['children.email'],
+                'password' : result['children.password'],
+                'created_at' : result['children.created_at'],
+                'updated_at' : result['children.updated_at'],
+                'parent_id' : result['children.parent_id']
+        })
+        all_children = []
+        all_children.append(this_child[0])
+        return this_child
+        # for result in results:
+        #     these_chores = cls(result)
+        #     these_chores.parent_user = parent.Parent({
+        #         'id' : result['parents.id'],
+        #         'first_name' : result['first_name'],
+        #         'last_name' : result['last_name'],
+        #         'email' : result['email'],
+        #         'password' : result['password'],
+        #         'created_at' : result['parents.created_at'],
+        #         'updated_at' : result['parents.updated_at']
+        #     })
+        #     this_parents_chores.append(these_chores)
+        # return this_parents_chores
 
 # UPDATE CHORE MODELS
     @classmethod

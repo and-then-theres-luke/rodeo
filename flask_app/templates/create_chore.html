@@ -53,9 +53,9 @@
             /></label>
             <label for=""
                 >Select a child
-                <select name="child">
+                <select name="child_id">
                     {% for child in children %}
-                    <option value="{{child_id}}">{{child.first_name}}</option>
+                    <option value="{{child.id}}">{{child.first_name}}</option>
                     {% endfor %}
                 </select>
             </label>

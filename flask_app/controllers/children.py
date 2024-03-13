@@ -7,7 +7,7 @@ def children_frontend():
     if 'user_id' not in session:
         return redirect('/login')
     all_children = child.Child.get_all_children_by_parent_id(session['user_id'])
-    return render_template('manage_children.html', all_children = all_children)
+    return render_template('manage_children.html', all_my_children = all_children)
     
 @app.post('/children/add/process')
 def add_child_frontend():

@@ -11,19 +11,18 @@ from flask_app.models import chore, parent, child # import entire file, rather t
 def create_chore_frontend():
     if 'user_id' not in session: 
         return redirect('/')
+    all_children = child.Child.get_all_children()
     if session['is_parent'] == False:
         return redirect('/')
-    return render_template('create_chore.html')
+    return render_template('create_chore.html', children=all_children)
 
 @app.post('/chores/create/process')
 def create_chore_process_frontend():
     print(session)
     print(request.form)
-    all_children = child.Child.get_all_children()
     if 'user_id' not in session: 
         return redirect('/')
     if not chore.Chore.create_chore(request.form):
-
         return redirect('/chores/create')
     return redirect('/chores')
 

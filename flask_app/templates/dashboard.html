@@ -61,7 +61,7 @@
                             <p class="card-text">{{chore.description}}</p>
                             <p class="card-text">{{chore.location}}</p>
                             <p class="card-text">
-                                Assigned to: {{chore.owner.first_name}}
+                                Assigned to: {{all_chores.children.first_name}}
                             </p>
                             {% if one_user.is_parent == True %}
                             <p>
