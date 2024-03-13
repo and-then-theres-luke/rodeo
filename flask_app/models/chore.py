@@ -26,13 +26,13 @@ class Chore:
     def create_chore(cls,data):
         print(data, "!!!!!!!!!!!!!!!!!!!!!")
         query_data = {'title' : data['title'],
-                        'description' : data['description'],
-                        'location' : data['location'],
-                        'day' : data['day'],
-                        'completed' : data['completed'],
-                        'parent_id' : data['user_id'],
-                        'child_id' : data['child_id']
-                        }
+                    'description' : data['description'],
+                    'location' : data['location'],
+                    'day' : data['day'],
+                    'completed' : data['completed'],
+                    'parent_id' : data['user_id'],
+                    'child_id' : data['child_id']
+                    }
         query = ''' 
             INSERT INTO
             chores
@@ -100,27 +100,30 @@ class Chore:
         query = '''
             SELECT * 
             FROM chores
-            LEFT JOIN parents ON chores.parent_id = chores.id
+            LEFT JOIN parents ON chores.parent_id = parents.id
             LEFT JOIN children ON chores.child_id = children.id
             WHERE parents.id = %(id)s
             ;'''
         results = connectToMySQL(cls.db).query_db(query, data)
         print(results,"RESULTS!!!!!!!!")
-        for result in results:
-            this_child = cls(result)
-        this_child.child_object = Chore({
-                'id' : result['children.id'],
-                'first_name' : result['children.first_name'],
-                'last_name' : result['children.last_name'],
-                'email' : result['children.email'],
-                'password' : result['children.password'],
-                'created_at' : result['children.created_at'],
-                'updated_at' : result['children.updated_at'],
-                'parent_id' : result['children.parent_id']
-        })
-        all_children = []
-        all_children.append(this_child[0])
-        return this_child
+        return results
+        # for result in results:
+        #     this_child = cls(result)
+        # this_child.child_object = Chore({
+        #         'id' : result['children.id'],
+        #         'first_name' : result['children.first_name'],
+        #         'last_name' : result['children.last_name'],
+        #         'email' : result['children.email'],
+        #         'password' : result['children.password'],
+        #         'created_at' : result['children.created_at'],
+        #         'updated_at' : result['children.updated_at'],
+        #         'parent_id' : result['children.parent_id']
+        # })
+        # all_children = []
+        # all_children.append(this_child[0])
+        # print("all children", all_children)
+        # print("thischild", this_child)
+        # return this_child
         # for result in results:
         #     these_chores = cls(result)
         #     these_chores.parent_user = parent.Parent({

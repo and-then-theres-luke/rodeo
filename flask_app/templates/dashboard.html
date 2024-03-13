@@ -61,14 +61,14 @@
                             <p class="card-text">{{chore.description}}</p>
                             <p class="card-text">{{chore.location}}</p>
                             <p class="card-text">
-                                Assigned to: {{all_chores.children.first_name}}
+                                Assigned to: {{chore.child_first_name}}
                             </p>
                             {% if one_user.is_parent == True %}
                             <p>
                                 <a class="btn btn-primary">View</a>
                                 <a class="btn btn-danger">Delete</a>
                             </p>
-                            <p></p>
+                            <p></p>,
                             {% else %}
                             <p><a class="btn btn-primary">View</a></p>
                             {% endif %}
