@@ -1,6 +1,6 @@
 from flask_app import app
 from flask import render_template, redirect, request, session
-from flask_app.models import chore, parent # import entire file, rather than class, to avoid circular imports
+from flask_app.models import chore, parent, child # import entire file, rather than class, to avoid circular imports
 # As you add model files add them the the import above
 # This file is the second stop in Flask's thought process, here it looks for a route that matches the request
 
@@ -13,15 +13,18 @@ def create_chore_frontend():
         return redirect('/')
     if session['is_parent'] == False:
         return redirect('/')
+    chore.Chore.
     return render_template('create_chore.html')
 
 @app.post('/chores/create/process')
 def create_chore_process_frontend():
+    print(session)
+    print(request.form)
     if 'user_id' not in session: 
         return redirect('/')
     if not chore.Chore.create_chore(request.form):
         return redirect('/chore/create')
-    return redirect('/dashboard')
+    return redirect('/chores')
 
 
 # Read Chores Controller
@@ -31,7 +34,12 @@ def view_all_chores_frontend():
     if 'user_id' not in session: 
         return redirect('/')
     all_chores = chore.Chore.get_all_chores_by_parent_id(session['user_id'])
-    return render_template('view_all_chores.html', all_chores = all_chores)
+    if session['is_parent'] == True:
+        one_user = parent.Parent.get_parent_by_id(session['user_id'])
+        return render_template('all_chores.html', all_chores = all_chores, one_user = one_user)
+    else:
+        one_user = child.Child.get_child_by_id(session['user_id'])
+        return render_template('all_chores.html', all_chores = all_chores, one_user = one_user)
     
 
 @app.route('/chores/view/<int:chore_id>')
