@@ -19,6 +19,7 @@ class Chore:
         self.user_id = data['user_id']
         self.child_id = data['child_id']
         self.parent_user = None
+        self.child_user = None
 
 
 # CREATE CHORE MODELS
@@ -90,13 +91,20 @@ class Chore:
     def get_all_chores_by_parent_id(cls,id):
         data = {'id' : id}
         query = '''
-            SELECT *
+            SELECT chores.*, parents.*, children.*
             FROM chores
-            LEFT JOIN parents ON chores.parent_id = parents.id
-            WHERE parents.id = %(id)s
-            ;'''
+                LEFT JOIN parents ON chores.parent_id = parents.id
+                LEFT JOIN children ON chores.child_id = children.id
+            WHERE parents.id = 1
+                ;'''
+            # SELECT *
+            # FROM chores
+            #     LEFT JOIN parents ON chores.parent_id = parents.id
+            #     LEFT JOIN children ON chores.child_id = children.id
+            # WHERE parents.id = 1
         results = connectToMySQL(cls.db).query_db(query, data)
-        this_parents_recipes = []
+        this_parents_chores = []
+        chores_assigned_to_child = []
         for result in results:
             these_chores = cls(result)
             these_chores.parent_user = parent.Parent({
@@ -108,8 +116,18 @@ class Chore:
                 'created_at' : result['parents.created_at'],
                 'updated_at' : result['parents.updated_at']
             })
-            this_parents_recipes.append(these_chores)
-        return this_parents_recipes
+            this_parents_chores.append(these_chores)
+            these_chores.child_user = child.Child({
+                'id' : result['children.id'],
+                'first_name' : result['children.first_name'],
+                'last_name' : result['children.last_name'],
+                'email' : result['children.email'],
+                'password' : result['children.password'],
+                'created_at' : result['children.created_at'],
+                'updated_at' : result['children.updated_at']
+            })
+            chores_assigned_to_child.append(these_chores)
+        return this_parents_chores, chores_assigned_to_child
 
 # UPDATE CHORE MODELS
     @classmethod
