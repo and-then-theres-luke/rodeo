@@ -16,7 +16,7 @@
         ></script>
         <title>View Children!</title>
     </head>
-    <body>
+    <body class="container text-bg-danger">
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -27,14 +27,14 @@
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a
-                            class="nav-link"
+                            class="nav-link link-light"
                             href="/dashboard"
                             >Dashboard</a
                         >
                     </li>
                     <li class="nav-item">
                         <a
-                            class="nav-link"
+                            class="nav-link link-light"
                             href="/chores"
                             >Chores</a
                         >
@@ -48,7 +48,7 @@
                     </li>
                     <li class="nav-item">
                         <a
-                            class="nav-link"
+                            class="nav-link link-light"
                             href="/logout"
                             >Logout</a
                         >
@@ -60,14 +60,23 @@
                     <table class="table">
                         <thead>
                             <th>Name</th>
-                            <th>Stars</th>
                             <th>Actions</th>
                         </thead>
                         <tbody>
                             {% for child in all_my_children %}
-                            <td>{{child.first_name}}{{ child.last_name }}</td>
-                            <td>{{child.stars}}</td>
-                            <td>View Child | Remove Child</td>
+                            <td>{{child.first_name}} {{ child.last_name }}</td>
+                            <td>
+                                <a
+                                    class="btn btn-warning"
+                                    href="/children/view/{{child.id}}"
+                                    >Edit Child</a
+                                >
+                                <a
+                                    class="btn btn-danger"
+                                    href="/children/delete/process/{{child.id}}"
+                                    >Remove Child</a
+                                >
+                            </td>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -78,7 +87,7 @@
             <div class="row">
                 <p class="text-center">
                     <button
-                        class="btn btn-primary col-md-6"
+                        class="btn btn-warning col-md-6"
                         data-bs-toggle="collapse"
                         data-bs-target="#new_kid_form"
                     >
@@ -91,7 +100,8 @@
                 >
                     <form
                         class="form mb-2"
-                        action="/children/add/process" method="post"
+                        action="/children/add/process"
+                        method="post"
                     >
                         <!-- Hidden Inputs -->
                         <input

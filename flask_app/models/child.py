@@ -9,6 +9,7 @@ bcrypt = Bcrypt(app)
 class Child:
     db = "chore_tracker"
     def __init__(self, data):
+        self.id = data['id']
         self.first_name = data['first_name']
         self.last_name = data['last_name']
         self.email = data['email']
@@ -21,9 +22,6 @@ class Child:
 # CREATE CHILDREN MODELS
     @classmethod
     def create_child(cls,data):
-        if not cls.validate_child_on_register(data): return False
-        data = data.copy()
-        data['password'] = bcrypt.generate_password_hash(data['password'])
         form_data = {
             'first_name': data['first_name'],
             'last_name': data['last_name'],
@@ -34,10 +32,21 @@ class Child:
         query = ''' 
             INSERT INTO 
             children
-                (first_name,last_name,email,password,parent_id)
+                (
+                    first_name,
+                    last_name,
+                    email,
+                    password,
+                    parent_id)
             VALUES
-                (%(first_name)s,%(last_name)s,%(email)s,%(password)s,%(parent_id)s)
-            ;'''
+                (
+                    %(first_name)s,
+                    %(last_name)s,
+                    %(email)s,
+                    %(password)s,
+                    %(parent_id)s)
+            ;
+            '''
         child_id = connectToMySQL(cls.db).query_db(query,form_data)
         return child_id
     
@@ -79,7 +88,8 @@ class Child:
             WHERE id = %(id)s
             ;'''
         result = connectToMySQL(cls.db).query_db(query,data)
-        return result[0]
+        
+        return cls(result[0])
     
     @classmethod
     def get_child_by_email(cls,email):
@@ -89,10 +99,10 @@ class Child:
             FROM children
             WHERE email = %(email)s
             ;'''
-        child_email = connectToMySQL(cls.db).query_db(query, data)
-        if child_email:
-            return cls(child_email[0])
-        return False
+        result = connectToMySQL(cls.db).query_db(query, data)
+        if not result[0]:
+            return False
+        return cls(result[0])
     
     @classmethod
     def get_chores_assigned_to_child(cls,id):

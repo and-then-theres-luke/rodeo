@@ -54,13 +54,13 @@ class Parent:
 
     # Read Users Models
     @classmethod
-    def get_parent_by_id(cls,data):
-        id = {'id': data}
+    def get_parent_by_id(cls,id):
+        data = {'id': id}
         query = """
             SELECT *
             FROM parents
             WHERE id = %(id)s;"""
-        results = connectToMySQL(cls.db).query_db(query,id)
+        results = connectToMySQL(cls.db).query_db(query,data)
         if results:
             return cls(results[0])
         return False
@@ -78,12 +78,6 @@ class Parent:
         if result:
             return cls(result[0])
         return False
-
-
-
-
-
-
 
 
     # Update Users Models
