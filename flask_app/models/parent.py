@@ -46,7 +46,6 @@ class Parent:
                 %(email)s, 
                 %(password)s);"""
         user_id = connectToMySQL(cls.db).query_db(query,user_data)
-        print(user_id)
         session['user_id'] = user_id
         session['first_name'] = user_data['first_name']
         session['is_parent'] = True
@@ -68,15 +67,13 @@ class Parent:
 
 
     @classmethod
-    def get_parent_by_email(cls,data):
-        email= {'email' : data}
-        print(data, "data")
-        print(email, "email")
+    def get_parent_by_email(cls,email):
+        data = {'email' : email}
         query = """
             SELECT *
             FROM parents
             WHERE email = %(email)s;"""
-        result = connectToMySQL(cls.db).query_db(query,email)
+        result = connectToMySQL(cls.db).query_db(query,data)
         print(result)
         if result:
             return cls(result[0])
@@ -97,14 +94,14 @@ class Parent:
     # Delete Users Models
     
     @classmethod
-    def delete_user_account(cls,data):
-        id = {'id' : data}
+    def delete_user_account(cls,id):
+        data = {'id' : id}
         query = """
             DELETE FROM
             parents
             WHERE id = %(id)s;
             """
-        return connectToMySQL(cls.db).query_db(query,id)
+        return connectToMySQL(cls.db).query_db(query,data)
         
     
     # login
