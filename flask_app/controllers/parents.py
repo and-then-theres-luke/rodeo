@@ -41,9 +41,8 @@ def login_frontend():
 
 @app.post('/login/process')
 def login_process_frontend():
-    print(request.form)
-    if not parent.Parent.log_parent_in(request.form['email']):
-        if not child.Child.log_child_in(request.form['email']):
+    if not parent.Parent.log_parent_in(request.form):
+        if not child.Child.log_child_in(request.form):
             return redirect('/login')
     return redirect('/dashboard')
 
