@@ -13,7 +13,6 @@ class Chore:
         self.location = data['location']
         self.day = data['day']
         self.completed = data['completed']
-        self.is_claimed = data['is_claimed']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.user_id = data['user_id']
@@ -33,16 +32,15 @@ class Chore:
                         'location' : data['location'],
                         'day' : data['day'],
                         'completed' : data['completed'],
-                        'is_claimed' : data['is_claimed'],
                         'user_id' : data['user_id'],
                         'child_id' : child_id
                         }
         query = ''' 
             INSERT INTO 
             chores
-                (title,description,location,day,completed,is_claimed,user_id,child_id)
+                (title,description,location,day,completed,user_id,child_id)
             VALUES
-                (%(title)s,%(description)s,%(location)s,%(day)s,%(completed)s,%(is_claimed)s,%(user_id)s,%(child_id)s)
+                (%(title)s,%(description)s,%(location)s,%(day)s,%(completed)s,%(user_id)s,%(child_id)s)
             ;'''
         chore_id = connectToMySQL(cls.db).query_db(query, query_data)
         return chore_id
@@ -90,13 +88,13 @@ class Chore:
     def get_all_chores_by_parent_id(cls,id):
         data = {'id' : id}
         query = '''
-            SELECT *
+            SELECT * 
             FROM chores
-            LEFT JOIN parents ON chores.parent_id = parents.id
-            WHERE parents.id = %(id)s
-            FROM children
-            LEFT JOIN chores ON children.chore_id = chores.id
-            WHERE children.id = %(id)s
+                LEFT JOIN parents
+                ON parents.id = chores.parent_id
+                LEFT JOIN children
+                ON children.id = chores.child_id
+            WHERE child_id = %(id)s
             ;'''
         results = connectToMySQL(cls.db).query_db(query, data)
         this_parents_chores = []
