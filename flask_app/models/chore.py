@@ -23,6 +23,7 @@ class Chore:
 # CREATE CHORE MODELS
     @classmethod
     def create_chore(cls,data):
+        print(data, "!!!!!!!!!!!!!!!!!!!!!")
         if 'child_id' not in data:
             child_id = 0
         else:
@@ -32,15 +33,27 @@ class Chore:
                         'location' : data['location'],
                         'day' : data['day'],
                         'completed' : data['completed'],
-                        'user_id' : data['user_id'],
+                        'parent_id' : data['user_id'],
                         'child_id' : child_id
                         }
         query = ''' 
-            INSERT INTO 
+            INSERT INTO
             chores
-                (title,description,location,day,completed,user_id,child_id)
+                (title,
+                description,
+                location,
+                day,
+                completed,
+                parent_id,
+                child_id)
             VALUES
-                (%(title)s,%(description)s,%(location)s,%(day)s,%(completed)s,%(user_id)s,%(child_id)s)
+                (%(title)s,
+                %(description)s,
+                %(location)s,
+                %(day)s,
+                %(completed)s,
+                %(parent_id)s,
+                %(child_id)s)
             ;'''
         chore_id = connectToMySQL(cls.db).query_db(query, query_data)
         return chore_id

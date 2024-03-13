@@ -13,7 +13,6 @@ def create_chore_frontend():
         return redirect('/')
     if session['is_parent'] == False:
         return redirect('/')
-    chore.Chore.
     return render_template('create_chore.html')
 
 @app.post('/chores/create/process')
@@ -23,7 +22,7 @@ def create_chore_process_frontend():
     if 'user_id' not in session: 
         return redirect('/')
     if not chore.Chore.create_chore(request.form):
-        return redirect('/chore/create')
+        return redirect('/chores/create')
     return redirect('/chores')
 
 
