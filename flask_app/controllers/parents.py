@@ -44,7 +44,7 @@ def login_process_frontend():
     if not parent.Parent.log_parent_in(request.form):
         if not child.Child.log_child_in(request.form):
             return redirect('/login')
-        return redirect('/dashboard')
+    return redirect('/dashboard')
 
 # log user out
 
