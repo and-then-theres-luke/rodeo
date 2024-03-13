@@ -55,7 +55,7 @@
                 >Select a child
                 <select name="child">
                     {% for child in children %}
-                    <option value="{{child_id}}"></option>
+                    <option value="{{child_id}}">{{child.first_name}}</option>
                     {% endfor %}
                 </select>
             </label>

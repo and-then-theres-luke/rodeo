@@ -19,11 +19,14 @@ def create_chore_frontend():
 def create_chore_process_frontend():
     print(session)
     print(request.form)
+    all_children = child.Child.get_all_children()
     if 'user_id' not in session: 
         return redirect('/')
     if not chore.Chore.create_chore(request.form):
+
         return redirect('/chores/create')
     return redirect('/chores')
+
 
 
 # Read Chores Controller
