@@ -35,7 +35,7 @@
                     <li class="nav-item">
                         <a
                             class="nav-link"
-                            href="#"
+                            href="/chores"
                             >Chores</a
                         >
                     </li>
@@ -92,7 +92,7 @@
                 >
                     <form
                         class="form mb-2"
-                        action="/child/create"
+                        action="/children/add/process" method="post"
                     >
                         <!-- Hidden Inputs -->
                         <input
@@ -108,13 +108,24 @@
                         <!-- Name -->
                         <label
                             class="form-label"
-                            for="name"
-                            >Name</label
+                            for="first_name"
+                            >First Name</label
                         >
                         <input
                             class="form-control"
                             type="text"
-                            name="name"
+                            name="first_name"
+                            id="name"
+                        />
+                        <label
+                            class="form-label"
+                            for="last_name"
+                            >Last Name</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            name="last_name"
                             id="name"
                         />
                         <!-- Email -->
