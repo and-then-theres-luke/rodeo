@@ -21,7 +21,9 @@ class Child:
 # CREATE CHILDREN MODELS
     @classmethod
     def create_child(cls,data):
-        print(data,"la;ksdg[oadf[oig!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!]]")
+        if not cls.validate_child_on_register(data): return False
+        data = data.copy()
+        data['password'] = bcrypt.generate_password_hash(data['password'])
         form_data = {
             'first_name': data['first_name'],
             'last_name': data['last_name'],
