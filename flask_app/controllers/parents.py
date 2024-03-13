@@ -28,7 +28,6 @@ def display_dashboard_frontend():
     if session['is_parent'] == True:
         one_user = parent.Parent.get_parent_by_id(session['user_id'])
         all_chores = chore.Chore.get_all_chores_by_parent_id(session['user_id'])
-        print(all_chores,"!!!!!!!!!!!!1111111111112222222222222")
     else:
         one_user = child.Child.get_child_by_id(session['user_id'])
         all_chores = chore.Chore.get_all_chores_by_parent_id(one_user.parent_id)
