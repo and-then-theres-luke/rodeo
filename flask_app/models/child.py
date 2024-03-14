@@ -131,7 +131,7 @@ class Child:
 # UPDATE CHILDREN MODELS
     @classmethod
     def edit_child(cls,data):
-        if not cls.validate_child_on_register(data):
+        if not cls.validate_child_on_edit(data):
             return False
         query = ''' 
             UPDATE 
@@ -144,7 +144,7 @@ class Child:
             WHERE id = %(id)s
             ;'''
         connectToMySQL(cls.db).query_db(query, data)
-        return
+        return True
     
 # DELETE CHILDREN MODELS
     
@@ -205,8 +205,9 @@ class Child:
         return is_valid
     
     
-        @classmethod
+    @classmethod
     def validate_child_on_edit(cls, data):
+        print(data, "DDDDDAAAAAAAAATTTTTTTTTTTTTAAAAAAAAAAAAA!!!!!!!!!!!1")
         EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
         is_valid = True
         if len(data['first_name']) < 1:
@@ -230,4 +231,5 @@ class Child:
         if not data["password"] == data["confirm_password"]:
             flash("Your password must match confirm password.")
             is_valid = False
+        print(is_valid)
         return is_valid
