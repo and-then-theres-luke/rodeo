@@ -180,7 +180,21 @@ class Chore:
             WHERE id = %(id)s
             ;'''
         connectToMySQL(cls.db).query_db(query, data)
-        return 
+        return
+    
+    @classmethod
+    def delete_chores_by_child_id(cls, id):
+        data = {
+            'id' : id
+        }
+        query = """
+        DELETE
+        FROM chores
+        WHERE child_id = %(id)s
+        ;
+        """
+        connectToMySQL(cls.db).query_db(query, data)
+        return
 
 # CHORES VALIDATIONS 
     @classmethod

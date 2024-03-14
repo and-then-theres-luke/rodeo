@@ -39,6 +39,13 @@
                         href="/children"
                         >Children</a
                     >
+                <li class="nav-item">
+                    <a
+                        class="nav-link link-light"
+                        href="/parent/account"
+                        >Account</a
+                    >
+                </li>
                 </li>
                 <li class="nav-item">
                     <a
@@ -51,8 +58,14 @@
             <div class="row my-2">
                 <p class="h4">Editing <span class="text-warning">{{one_child.first_name}}</span></p>
             </div>
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} {% endwith %}
             <div class="row">
-
                 <form
                     class="form mb-2"
                     action="/children/edit/process"
