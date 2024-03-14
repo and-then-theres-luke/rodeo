@@ -67,8 +67,6 @@ def update_parent_frontend():
 def update_parent_process_frontend():
     if 'user_id' not in session: 
         return redirect('/login')
-    if session['user_id'] != request.form['user_id']:
-        return redirect('/login')
     parent.Parent.edit_parent(request.form)
     return redirect('/parent/account')
 
