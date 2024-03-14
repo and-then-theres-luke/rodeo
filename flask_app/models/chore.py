@@ -171,7 +171,7 @@ class Chore:
                 description = %(description)s,
                 location = %(location)s,
                 day = %(day)s,
-                completed = %(completed)s,
+                completed = %(completed)s
             WHERE id = %(chore_id)s
             ;'''
         return connectToMySQL(cls.db).query_db(query, data)
