@@ -69,7 +69,7 @@ def update_parent_process_frontend():
         return redirect('/login')
     if session['user_id'] != request.form['user_id']:
         return redirect('/login')
-    parent.Parent.update_parent_info(request.form)
+    parent.Parent.edit_parent(request.form)
     return redirect('/parent/account')
 
 

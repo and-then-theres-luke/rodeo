@@ -82,7 +82,22 @@ class Parent:
 
     # Update Users Models
 
-
+    @classmethod
+    def edit_parent(cls,data):
+        if not cls.validate_parent_on_edit(data):
+            return False
+        query = ''' 
+            UPDATE 
+                parents
+            SET
+                first_name = %(first_name)s,
+                last_name = %(last_name)s,
+                email = %(email)s, 
+                password = %(password)s
+            WHERE id = %(id)s
+            ;'''
+        connectToMySQL(cls.db).query_db(query, data)
+        return True
 
 
     # Delete Users Models
@@ -161,3 +176,31 @@ class Parent:
         return is_valid
             
 
+    
+    @classmethod
+    def validate_parent_on_edit(cls, data):
+        EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+        is_valid = True
+        if len(data['first_name']) < 1:
+            flash("First name is required")
+            is_valid = False
+        if len(data['last_name']) < 1:
+            flash("Last name is required")
+            is_valid = False
+        if len(data['email']) < 1:
+            flash("Email is required.")
+            is_valid = False
+        if not EMAIL_REGEX.match(data['email']):
+            flash("Invalid email address")
+            is_valid = False
+        if len(data['password']) < 8:
+            flash("Password must be at least 8 charicters.")
+            is_valid = False
+        if len(data['confirm_password']) < 1:
+            flash("Confirm Password is required.")
+            is_valid = False
+        if not data["password"] == data["confirm_password"]:
+            flash("Your password must match confirm password.")
+            is_valid = False
+        return is_valid
+            
