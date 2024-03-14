@@ -16,15 +16,25 @@
         ></script>
         <title>Rodeo</title>
     </head>
-    <body>
-        <div class="container-sm justify-content-center align-self-center">
+    <body class="container text-bg-danger">
+        <div
+            class="container-sm justify-content-center align-self-center text-bg-danger"
+        >
             <div class="row justify-content-center">
                 <div class="col col-sm-8 text-center">
                     <h1>Welcome to Rodeo</h1>
                     <h2 class="h4">Is this your first rodeo?</h2>
+                    {% with messages = get_flashed_messages() %} {% if messages
+                    %}
+                    <ul class="flashes">
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %} {% endwith %}
                     <div class="col text-center">
                         <button
-                            class="btn btn-primary col-12 mb-2"
+                            class="btn btn-warning col-12 mb-2"
                             data-bs-toggle="collapse"
                             data-bs-target="#register"
                         >
@@ -110,7 +120,7 @@
                             </div>
                         </div>
                         <button
-                            class="btn btn-primary col-12 mb-2"
+                            class="btn btn-warning col-12 mb-2"
                             data-bs-toggle="collapse"
                             data-bs-target="#login"
                         >
@@ -152,7 +162,7 @@
                                                 name="password"
                                             />
                                             <button
-                                                class="btn btn-warning col-4"
+                                                class="btn btn-warning col-4 mt-2"
                                             >
                                                 Log In!
                                             </button>

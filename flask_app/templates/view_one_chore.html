@@ -10,7 +10,7 @@
             rel="stylesheet"
             href="../static/css/bootstrap.css"
         />
-        <title>View a Job!</title>
+        <title>Rodeo</title>
     </head>
     <body>
         <div class="container">
@@ -19,6 +19,13 @@
                     <h1>{{one_chore.title}}</h1>
                 </div>
             </div>
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} {% endwith %}
             <div class="row">
                 <div class="col">
                     <h2 class="h4">

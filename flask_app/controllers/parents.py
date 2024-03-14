@@ -56,13 +56,14 @@ def logout_frontend():
 
 # Update Parent Controller
 
-@app.post('/parent/update')
+@app.route('/parent/account')
 def update_parent_frontend():
     if 'user_id' not in session: 
         return redirect('/login')
-    return redirect('/parent/account')
+    one_user = parent.Parent.get_parent_by_id(session['user_id'])
+    return render_template('one_user.html', one_user = one_user)
 
-@app.post('/parent/update/process')
+@app.post('/parent/account/process')
 def update_parent_process_frontend():
     if 'user_id' not in session: 
         return redirect('/login')

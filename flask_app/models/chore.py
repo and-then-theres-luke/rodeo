@@ -84,8 +84,8 @@ class Chore:
         return chores
     
     @classmethod
-    def get_chore_by_id(cls,id):
-        data = {'id' : id }
+    def get_chore_by_id(cls,chore_id):
+        data = {'id' : chore_id }
         query = '''
             SELECT * 
             FROM chores
@@ -121,8 +121,8 @@ class Chore:
         return one_chore
     
     @classmethod
-    def get_all_chores_by_parent_id(cls,id):
-        data = {'id' : id}
+    def get_all_chores_by_parent_id(cls,parent_id):
+        data = {'id' : parent_id}
         query = '''
             SELECT * 
             FROM parents
@@ -135,7 +135,19 @@ class Chore:
         if not results:
             return all_chores
         for row in results:
-            one_chore = cls(row)
+            one_chore_data = {
+                'id' : row['chores.id'],
+                'parent_id' : row['parent_id'],
+                'child_id' : row['child_id'],
+                'title' : row['title'],
+                'description' : row['description'],
+                'location' : row['location'],
+                'day' : row['day'],
+                'completed' : row['completed'],
+                'created_at' : row['chores.created_at'],
+                'updated_at' : row['chores.updated_at']
+                }
+            one_chore = cls(one_chore_data)
             one_child = child.Child.get_child_by_id(one_chore.child_id)
             one_chore.child = one_child
             all_chores.append(one_chore)
@@ -168,7 +180,21 @@ class Chore:
             WHERE id = %(id)s
             ;'''
         connectToMySQL(cls.db).query_db(query, data)
-        return 
+        return
+    
+    @classmethod
+    def delete_chores_by_child_id(cls, id):
+        data = {
+            'id' : id
+        }
+        query = """
+        DELETE
+        FROM chores
+        WHERE child_id = %(id)s
+        ;
+        """
+        connectToMySQL(cls.db).query_db(query, data)
+        return
 
 # CHORES VALIDATIONS 
     @classmethod
