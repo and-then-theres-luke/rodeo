@@ -22,6 +22,9 @@ class Child:
 # CREATE CHILDREN MODELS
     @classmethod
     def create_child(cls,data):
+        if not cls.validate_child_on_register(data): return False
+        data = data.copy()
+        data['password'] = bcrypt.generate_password_hash(data['password'])
         form_data = {
             'first_name': data['first_name'],
             'last_name': data['last_name'],
@@ -29,6 +32,7 @@ class Child:
             'password': data['password'],
             'parent_id': data['parent_id']
         }
+        print(form_data)
         query = ''' 
             INSERT INTO 
             children
@@ -45,9 +49,10 @@ class Child:
                     %(email)s,
                     %(password)s,
                     %(parent_id)s)
-            ;
-            '''
+            ;'''
+        print(query)
         child_id = connectToMySQL(cls.db).query_db(query,form_data)
+        print(child_id)
         return child_id
     
 
@@ -100,9 +105,10 @@ class Child:
             WHERE email = %(email)s
             ;'''
         result = connectToMySQL(cls.db).query_db(query, data)
-        if not result[0]:
-            return False
-        return cls(result[0])
+        print(result)
+        if result:
+            return cls(result[0])
+        return False
     
     @classmethod
     def get_chores_assigned_to_child(cls,id):
