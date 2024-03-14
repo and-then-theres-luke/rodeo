@@ -28,5 +28,6 @@ def add_child_frontend():
 def remove_child_frontend(id):
     if 'user_id' not in session:
         return redirect('/login')
+    chore.Chore.delete_chores_by_child_id(id)
     child.Child.delete_child(id)
     return redirect('/children')

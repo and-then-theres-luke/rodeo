@@ -56,6 +56,13 @@ def view_one_chore_frontend(chore_id):
 
 # Update Chores Controller
 
+@app.route('/chore/complete/<int:chore_id>')
+def toggle_completed_frontend(chore_id):
+    if 'user_id' not in session: 
+        return redirect('/')
+    chore.Chore.toggle_complete(chore_id)
+    return redirect('/dashboard')
+
 @app.post("/chores/update/process")
 def chore_update_process_frontend():
     if 'user_id' not in session: 

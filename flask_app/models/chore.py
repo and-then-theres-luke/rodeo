@@ -174,7 +174,29 @@ class Chore:
                 completed = %(completed)s
             WHERE id = %(chore_id)s
             ;'''
-        return connectToMySQL(cls.db).query_db(query, data)
+        connectToMySQL(cls.db).query_db(query, data)
+        return 
+    
+    @classmethod
+    def toggle_complete(cls,chore_id):
+        one_chore = cls.get_chore_by_id(chore_id)
+        if one_chore.completed == False:
+            this_completed = 1
+        else:
+            this_completed = 0
+        data = {
+            'id' : chore_id,
+            'completed' : this_completed
+        }
+        query = """
+        UPDATE chores
+        SET
+            completed = %(completed)s
+        WHERE id = %(id)s
+        ;
+        """
+        connectToMySQL(cls.db).query_db(query, data)
+        return 
     
 # DELETE CHORE MODELS
     

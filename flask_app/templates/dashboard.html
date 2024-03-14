@@ -69,30 +69,37 @@
                 {% endif %} {% endwith %}
                 <div class="row mt-2">
                     {% for chore in all_chores %}
-                    <div class="card col-md-4 col-lg-3 my-1 mx-1 text-bg-light">
-                        <div class="card-body">
-                            <h5>{{chore.title}}</h5>
-                            <p class="card-text">{{chore.description}}</p>
-                            <p class="card-text">{{chore.location}}</p>
-                            <p class="card-text">
-                                Assigned to: {{chore.child.first_name}}
-                            </p>
-                            {% if session['is_parent'] == True %}
-                            <p>
-                                <a
+                    {% if chore.completed == True %}
+                    <div class="card col-md-4 col-lg-3 my-1 mx-1 text-bg-success">
+                        {% else %}
+                        <div class="card col-md-4 col-lg-3 my-1 mx-1 text-bg-light">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5>{{chore.title}}</h5>
+                                <p class="card-text">{{chore.description}}</p>
+                                <p class="card-text">{{chore.location}}</p>
+                                <p class="card-text">
+                                    Assigned to: {{chore.child.first_name}}
+                                </p>
+                                <p>
+                                    <a
                                     href="/chores/view/{{chore.id}}"
                                     class="btn btn-warning"
                                     >View</a
-                                >
-                                <a
+                                    >
+                                    {% if session['is_parent'] == True %}
+                                    <a
                                     href="/chores/delete/{{chore.id}}"
                                     class="btn btn-danger"
                                     >Delete</a
                                 >
                             </p>
-                            <p></p>
                             {% else %}
-                            <p><a class="btn btn-primary">View</a></p>
+                            {% if chore.completed == True %}
+                            <p><a href="/chore/complete/{{chore.id}}" class="btn btn-danger">Uncomplete</a></p>
+                            {% else %}
+                            <p><a href="/chore/complete/{{chore.id}}" class="btn btn-success">Complete</a></p>
+                            {% endif %}
                             {% endif %}
                         </div>
                     </div>
