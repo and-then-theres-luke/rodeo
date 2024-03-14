@@ -39,6 +39,8 @@
                         href="/children"
                         >Children</a
                     >
+                </li>
+                {% if session['is_parent'] == True %}
                 <li class="nav-item">
                     <a
                         class="nav-link link-light"
@@ -46,7 +48,7 @@
                         >Account</a
                     >
                 </li>
-                </li>
+                {% endif %}
                 <li class="nav-item">
                     <a
                         class="nav-link link-light"

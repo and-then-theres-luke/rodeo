@@ -43,13 +43,15 @@
                         >Children</a
                     >
                 </li>
+                {% if session['is_parent'] == True %}
                 <li class="nav-item">
                     <a
-                        class="nav-link active"
+                        class="nav-link link-light"
                         href="/parent/account"
                         >Account</a
                     >
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a
                         class="nav-link link-light"
@@ -74,13 +76,13 @@
             <div class="row">
                 <form
                     class="form mb-2"
-                    action="/children/edit/process"
+                    action="/parent/edit/process"
                     method="post"
                 >
                     <!-- Hidden Inputs -->
                     <input
                         type="hidden"
-                        name="parent_id"
+                        name="id"
                         value="{{session['user_id']}}"
                     />
                     <!-- Name -->
