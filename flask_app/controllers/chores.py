@@ -46,9 +46,10 @@ def view_one_chore_frontend(chore_id):
     if 'user_id' not in session: 
         return redirect('/')
     one_chore = chore.Chore.get_chore_by_id(chore_id)
+    all_children = child.Child.get_all_children_by_parent_id(session['user_id'])
     if one_chore.parent_id != session['user_id']:
         return redirect('/dashboard')
-    return render_template('chores_home.html')
+    return render_template('view_one_chore.html', one_chore = one_chore, all_children = all_children)
 
 
 

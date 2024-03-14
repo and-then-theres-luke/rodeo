@@ -8,17 +8,56 @@
         />
         <link
             rel="stylesheet"
-            href="../static/css/bootstrap.css"
+            href="../../static/css/bootstrap.css"
         />
+        <script
+            src="../../static/js/bootstrap.min.js"
+            defer
+        ></script>
         <title>Rodeo</title>
     </head>
-    <body>
+    <body class="container text-bg-danger">
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <h1>{{one_chore.title}}</h1>
+                    <h1>Rodeo</h1>
                 </div>
             </div>
+            <div class="row">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link link-light"
+                            href="/dashboard"
+                            >Dashboard</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link link-light"
+                            href="/chores"
+                            >Chores</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            href="/children"
+                            >Children</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link link-light"
+                            href="/logout"
+                            >Logout</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container text-bg-light">
+            <h2>Update {{one_chore.title}}!</h2>
             {% with messages = get_flashed_messages() %} {% if messages %}
             <ul class="flashes">
                 {% for message in messages %}
@@ -26,32 +65,96 @@
                 {% endfor %}
             </ul>
             {% endif %} {% endwith %}
-            <div class="row">
-                <div class="col">
-                    <h2 class="h4">
-                        Created on {{one_chore.created_at}} by
-                        {{one_chore.creator['first_name']}}
-                        {{one_chore.creator['last_name']}}
-                    </h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <p>Description</p>
-                    <p>{{one_chore.description}}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <p>Location</p>
-                    <p>{{one_chore.location}}</p>
-                </div>
-            </div>
-            {% if one_chore.isClaimed == False%}
-            <a href="">Claim Chore!</a>
-            {% else %} {% if one_chore.owner_id == session['user_id'] %}
-            <a href="">Release Chore!</a>
-            {% endif %} {% endif %}
+            <form
+                class="form mb-2 mt-2"
+                action="/chores/create/process"
+                method="post"
+            >
+                <!-- Hidden Inputs -->
+                <input
+                    type="hidden"
+                    name="user_id"
+                    value="{{session['user_id']}}"
+                />
+                <input
+                    type="hidden"
+                    name="completed"
+                    value="0"
+                />
+                <!-- Title -->
+                <label
+                    class="form-label"
+                    for="title"
+                    >Chore Title</label
+                >
+                <input
+                    class="form-control"
+                    type="text"
+                    name="title"
+                    value="{{one_chore.title}}"
+                    id="title"
+                />
+                <!-- Description -->
+                <label
+                    class="form-label"
+                    for="description"
+                    >Description</label
+                >
+                <input
+                    class="form-control"
+                    type="text"
+                    name="description"
+                    value="{{one_chore.description}}"
+                    id="description"
+                />
+                <!-- Day -->
+                <label
+                    class="form-label"
+                    for="day"
+                    >Day</label
+                >
+                <input
+                    class="form-control"
+                    type="date"
+                    name="day"
+                    value="{{one_chore.day}}"
+                    id="day"
+                />
+                <!-- Location -->
+                <label
+                    class="form-label"
+                    for="location"
+                    >Location</label
+                >
+                <input
+                    class="form-control"
+                    type="text"
+                    name="location"
+                    value="{{one_chore.location}}"
+                    id="location"
+                />
+                <!-- Which kid? -->
+                <label
+                    class="form-label"
+                    for="child_id"
+                    >Select a Child</label
+                >
+                <select
+                    class="form-control"
+                    type="select"
+                    name="child_id"
+                    id="child_id"
+                >
+                    {% for child in all_children %}
+                    <option value="{{child.id}}">{{child.first_name}}</option>
+                    {% endfor %}
+                </select>
+                <p class="text-center">
+                    <button class="btn btn-warning col-6 mt-2 mb-2">
+                        Submit!
+                    </button>
+                </p>
+            </form>
         </div>
     </body>
 </html>
