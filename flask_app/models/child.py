@@ -131,6 +131,8 @@ class Child:
 # UPDATE CHILDREN MODELS
     @classmethod
     def edit_child(cls,data):
+        if not cls.validate_child_on_register(data):
+            return False
         query = ''' 
             UPDATE 
                 children
@@ -138,7 +140,7 @@ class Child:
                 first_name = %(first_name)s,
                 last_name = %(last_name)s,
                 email = %(email)s, 
-                email = %(password)s)
+                password = %(password)s
             WHERE id = %(id)s
             ;'''
         connectToMySQL(cls.db).query_db(query, data)

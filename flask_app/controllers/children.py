@@ -15,7 +15,13 @@ def view_one_child_frontend(id):
         return redirect('/login')
     one_child = child.Child.get_child_by_id(id)
     return render_template("edit_child.html", one_child = one_child)
-    
+
+@app.post('/children/edit/process')
+def edit_child_frontend():
+    if 'user_id' not in session:
+        return redirect('/login')
+    child.Child.edit_child(request.form)
+    return redirect('/children')
     
 @app.post('/children/add/process')
 def add_child_frontend():
