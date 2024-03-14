@@ -25,6 +25,7 @@ def index():
 def display_dashboard_frontend():
     if 'user_id' not in session: 
         return redirect('/')
+    print("session['is_parent']", session['is_parent'])
     if session['is_parent'] == True:
         one_user = parent.Parent.get_parent_by_id(session['user_id'])
         all_chores = chore.Chore.get_all_chores_by_parent_id(session['user_id'])

@@ -55,20 +55,28 @@
             <div class="container">
                 <div class="row mt-2">
                     {% for chore in all_chores %}
-                    <div class="card col-md-4 col-lg-3 gap-2 text-bg-light">
+                    <div class="card col-md-4 col-lg-3 my-1 mx-1 text-bg-light">
                         <div class="card-body">
                             <h5>{{chore.title}}</h5>
                             <p class="card-text">{{chore.description}}</p>
                             <p class="card-text">{{chore.location}}</p>
                             <p class="card-text">
-                                Assigned to: {{chore.child_first_name}}
+                                Assigned to: {{chore.child.first_name}}
                             </p>
-                            {% if one_user.is_parent == True %}
+                            {% if session['is_parent'] == True %}
                             <p>
-                                <a class="btn btn-primary">View</a>
-                                <a class="btn btn-danger">Delete</a>
+                                <a
+                                    href="/chores/view/{{chore.id}}"
+                                    class="btn btn-warning"
+                                    >View</a
+                                >
+                                <a
+                                    href="/chores/delete/{{chore.id}}"
+                                    class="btn btn-danger"
+                                    >Delete</a
+                                >
                             </p>
-                            <p></p>,
+                            <p></p>
                             {% else %}
                             <p><a class="btn btn-primary">View</a></p>
                             {% endif %}

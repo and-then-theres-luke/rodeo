@@ -1,6 +1,6 @@
 from flask_app import app
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask import flash, session, request
+from flask import flash, session
 import re
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
@@ -80,15 +80,14 @@ class Child:
         return all_children
 
     @classmethod
-    def get_child_by_id(cls,id):
-        data = {'id' : id}
+    def get_child_by_id(cls,child_id):
+        data = {'id' : child_id}
         query = '''
             SELECT * 
             FROM children
             WHERE id = %(id)s
             ;'''
         result = connectToMySQL(cls.db).query_db(query,data)
-        
         return cls(result[0])
     
     @classmethod
