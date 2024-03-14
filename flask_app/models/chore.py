@@ -19,13 +19,12 @@ class Chore:
         self.parent_id = data['parent_id']
         self.child_id = data['child_id']
         self.parent = None
-        self.child_object = None
+        self.child = None
 
 
 # CREATE CHORE MODELS
     @classmethod
     def create_chore(cls,data):
-        print(data, "!!!!!!!!!!!!!!!!!!!!!")
         query_data = {'title' : data['title'],
                     'description' : data['description'],
                     'location' : data['location'],
@@ -85,59 +84,74 @@ class Chore:
         return chores
     
     @classmethod
-    def get_chore_by_id(cls,id):
-        data = {'id' : id }
+    def get_chore_by_id(cls,chore_id):
+        data = {'id' : chore_id }
         query = '''
             SELECT * 
             FROM chores
-            WHERE id = %(id)s
+            JOIN children
+            ON chores.child_id = children.id
+            WHERE chores.id = %(id)s
             ;'''
         result = connectToMySQL(cls.db).query_db(query,data)
-        return result[0]
+        print(result)
+        one_chore_data = {
+            'id' : result[0]['chores.id'],
+            'parent_id' : result[0]['chores.parent_id'],
+            'title' : result[0]['title'],
+            'description' : result[0]['description'],
+            'location' : result[0]['location'],
+            'day' : result[0]['day'],
+            'completed' : result[0]['completed'],
+            'created_at' : result[0]['chores.created_at'],
+            'updated_at' : result[0]['chores.updated_at']
+        }
+        one_chore = cls(one_chore_data)
+        one_child_data = {
+            'id' : result[0]['children.id'],
+            'parent_id' : result[0]['children.parent_id'],
+            'first_name' : result[0]['first_name'],
+            'last_name' : result[0]['last_name'],
+            'email' : result[0]['email'],
+            'password' : result[0]['password'],
+            'created_at' : result[0]['children.created_at'],
+            'updated_at' : result[0]['children.updated_at']
+        }
+        one_chore.child = child.Child(one_child_data)
+        return one_chore
     
     @classmethod
-    def get_all_chores_by_parent_id(cls,id):
-        data = {'id' : id}
+    def get_all_chores_by_parent_id(cls,parent_id):
+        data = {'id' : parent_id}
         query = '''
             SELECT * 
-            FROM chores
-            LEFT JOIN parents ON chores.parent_id = parents.id
-            LEFT JOIN children ON chores.child_id = children.id
+            FROM parents
+            JOIN chores 
+            ON chores.parent_id = parents.id
             WHERE parents.id = %(id)s
             ;'''
         results = connectToMySQL(cls.db).query_db(query, data)
-        print(results,"RESULTS!!!!!!!!")
-        return results
-        # for result in results:
-        #     this_child = cls(result)
-        # this_child.child_object = Chore({
-        #         'id' : result['children.id'],
-        #         'first_name' : result['children.first_name'],
-        #         'last_name' : result['children.last_name'],
-        #         'email' : result['children.email'],
-        #         'password' : result['children.password'],
-        #         'created_at' : result['children.created_at'],
-        #         'updated_at' : result['children.updated_at'],
-        #         'parent_id' : result['children.parent_id']
-        # })
-        # all_children = []
-        # all_children.append(this_child[0])
-        # print("all children", all_children)
-        # print("thischild", this_child)
-        # return this_child
-        # for result in results:
-        #     these_chores = cls(result)
-        #     these_chores.parent_user = parent.Parent({
-        #         'id' : result['parents.id'],
-        #         'first_name' : result['first_name'],
-        #         'last_name' : result['last_name'],
-        #         'email' : result['email'],
-        #         'password' : result['password'],
-        #         'created_at' : result['parents.created_at'],
-        #         'updated_at' : result['parents.updated_at']
-        #     })
-        #     this_parents_chores.append(these_chores)
-        # return this_parents_chores
+        all_chores = []
+        if not results:
+            return all_chores
+        for row in results:
+            one_chore_data = {
+                'id' : row['chores.id'],
+                'parent_id' : row['parent_id'],
+                'child_id' : row['child_id'],
+                'title' : row['title'],
+                'description' : row['description'],
+                'location' : row['location'],
+                'day' : row['day'],
+                'completed' : row['completed'],
+                'created_at' : row['chores.created_at'],
+                'updated_at' : row['chores.updated_at']
+                }
+            one_chore = cls(one_chore_data)
+            one_child = child.Child.get_child_by_id(one_chore.child_id)
+            one_chore.child = one_child
+            all_chores.append(one_chore)
+        return all_chores
 
 # UPDATE CHORE MODELS
     @classmethod
@@ -166,7 +180,21 @@ class Chore:
             WHERE id = %(id)s
             ;'''
         connectToMySQL(cls.db).query_db(query, data)
-        return 
+        return
+    
+    @classmethod
+    def delete_chores_by_child_id(cls, id):
+        data = {
+            'id' : id
+        }
+        query = """
+        DELETE
+        FROM chores
+        WHERE child_id = %(id)s
+        ;
+        """
+        connectToMySQL(cls.db).query_db(query, data)
+        return
 
 # CHORES VALIDATIONS 
     @classmethod

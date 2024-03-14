@@ -24,7 +24,7 @@
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a
-                        class="nav-link active"
+                        class="nav-link link-light"
                         href="/dashboard"
                         >Dashboard</a
                     >
@@ -45,12 +45,119 @@
                 </li>
                 <li class="nav-item">
                     <a
+                        class="nav-link active"
+                        href="/parent/account"
+                        >Account</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
                         class="nav-link link-light"
                         href="/logout"
                         >Logout</a
                     >
                 </li>
             </ul>
-    
-</body>
+            <div class="row my-2">
+                <p class="h4">
+                    Editing
+                    <span class="text-warning">{{one_user.first_name}}</span>
+                </p>
+            </div>
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} {% endwith %}
+            <div class="row">
+                <form
+                    class="form mb-2"
+                    action="/children/edit/process"
+                    method="post"
+                >
+                    <!-- Hidden Inputs -->
+                    <input
+                        type="hidden"
+                        name="parent_id"
+                        value="{{session['user_id']}}"
+                    />
+                    <!-- Name -->
+                    <label
+                        class="form-label"
+                        for="first_name"
+                        >First Name</label
+                    >
+                    <input
+                        class="form-control"
+                        type="text"
+                        name="first_name"
+                        value="{{one_user.first_name}}"
+                        id="first_name"
+                    />
+                    <label
+                        class="form-label"
+                        for="last_name"
+                        >Last Name</label
+                    >
+                    <input
+                        class="form-control"
+                        type="text"
+                        name="last_name"
+                        value="{{one_user.last_name}}"
+                        id="last_name"
+                    />
+                    <!-- Email -->
+                    <label
+                        class="form-label"
+                        for="email"
+                        >Email</label
+                    >
+                    <input
+                        class="form-control"
+                        type="email"
+                        name="email"
+                        value="{{one_user.email}}"
+                        id="email"
+                    />
+                    <!-- Password -->
+                    <label
+                        class="form-label"
+                        for="password"
+                        >Password</label
+                    >
+                    <input
+                        class="form-control"
+                        type="password"
+                        name="password"
+                        id="password"
+                    />
+                    <!-- Confirm Password -->
+                    <label
+                        class="form-label"
+                        for="confirm_password"
+                        >Confirm Password</label
+                    >
+                    <input
+                        class="form-control"
+                        type="password"
+                        name="confirm_password"
+                        id="confirm_password"
+                    />
+                    <p class="text-center">
+                        <button class="btn btn-warning col-3 mt-2">
+                            Save Changes
+                        </button>
+                        <a
+                            class="btn btn-secondary col-3 mt-2"
+                            href="/dashboard"
+                        >
+                            Discard Changes
+                        </a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </body>
 </html>

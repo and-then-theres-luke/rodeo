@@ -10,58 +10,147 @@
             rel="stylesheet"
             href="../static/css/bootstrap.css"
         />
-        <title>Add a Job!</title>
+        <script
+            src="../static/js/bootstrap.min.js"
+            defer
+        ></script>
+        <title>Rodeo</title>
     </head>
-    <body>
-        <h1>Add a Chore!</h1>
-
-        <form action="/chores/create/process" method = 'post'>
-            <input
-                type="hidden"
-                name="user_id"
-                value="{{session['user_id']}}"
-            />
-            <label for=""
-                >Title
+    <body class="container text-bg-danger">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1>Rodeo</h1>
+                </div>
+            </div>
+            <div class="row">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link link-light"
+                            href="/dashboard"
+                            >Dashboard</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link link-light"
+                            href="/chores"
+                            >Chores</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            href="/children"
+                            >Children</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link link-light"
+                            href="/logout"
+                            >Logout</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container text-bg-light">
+            <h2>Add a Chore!</h2>
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} {% endwith %}
+            <form
+                class="form mb-2 mt-2"
+                action="/chores/create/process"
+                method="post"
+            >
+                <!-- Hidden Inputs -->
                 <input
+                    type="hidden"
+                    name="user_id"
+                    value="{{session['user_id']}}"
+                />
+                <input
+                    type="hidden"
+                    name="completed"
+                    value="0"
+                />
+                <!-- Title -->
+                <label
+                    class="form-label"
+                    for="title"
+                    >Chore Title</label
+                >
+                <input
+                    class="form-control"
                     type="text"
                     name="title"
-            /></label>
-            <label for=""
-                >Description
+                    id="title"
+                />
+                <!-- Description -->
+                <label
+                    class="form-label"
+                    for="description"
+                    >Description</label
+                >
                 <input
-                    type="textarea"
+                    class="form-control"
+                    type="text"
                     name="description"
-            /></label>
-            <label for=""
-                >Day
+                    id="description"
+                />
+                <!-- Day -->
+                <label
+                    class="form-label"
+                    for="day"
+                    >Day</label
+                >
                 <input
+                    class="form-control"
                     type="date"
                     name="day"
-            /></label>
-            <label for=""
-                >Completed
-                <select name="completed">
-                    <option value="0">Not yet</option>
-                    <option value="1">Yes!!!</option>
-                </select></label>
-            <label for=""
-                >Location
+                    id="day"
+                />
+                <!-- Location -->
+                <label
+                    class="form-label"
+                    for="location"
+                    >Location</label
+                >
                 <input
+                    class="form-control"
                     type="text"
                     name="location"
-            /></label>
-            <label for=""
-                >Select a child
-                <select name="child_id">
+                    id="location"
+                />
+                <!-- Which kid? -->
+                <label
+                    class="form-label"
+                    for="child_id"
+                    >Select a Child</label
+                >
+                <select
+                    class="form-control"
+                    type="select"
+                    name="child_id"
+                    id="child_id"
+                >
                     {% for child in children %}
                     <option value="{{child.id}}">{{child.first_name}}</option>
                     {% endfor %}
                 </select>
-            </label>
-            
-            
-            <button class="btn btn-primary">Submit</button>
-        </form>
+                <p class="text-center">
+                    <button class="btn btn-warning col-6 mt-2 mb-2">
+                        Submit!
+                    </button>
+                </p>
+            </form>
+        </div>
     </body>
 </html>

@@ -18,13 +18,11 @@ def create_chore_frontend():
 
 @app.post('/chores/create/process')
 def create_chore_process_frontend():
-    print(session)
-    print(request.form)
     if 'user_id' not in session: 
         return redirect('/')
     if not chore.Chore.create_chore(request.form):
         return redirect('/chores/create')
-    return redirect('/chores')
+    return redirect('/dashboard')
 
 
 

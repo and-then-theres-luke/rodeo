@@ -25,6 +25,7 @@ def index():
 def display_dashboard_frontend():
     if 'user_id' not in session: 
         return redirect('/')
+    print("session['is_parent']", session['is_parent'])
     if session['is_parent'] == True:
         one_user = parent.Parent.get_parent_by_id(session['user_id'])
         all_chores = chore.Chore.get_all_chores_by_parent_id(session['user_id'])
@@ -55,13 +56,14 @@ def logout_frontend():
 
 # Update Parent Controller
 
-@app.post('/parent/update')
+@app.route('/parent/account')
 def update_parent_frontend():
     if 'user_id' not in session: 
         return redirect('/login')
-    return redirect('/parent/account')
+    one_user = parent.Parent.get_parent_by_id(session['user_id'])
+    return render_template('one_user.html', one_user = one_user)
 
-@app.post('/parent/update/process')
+@app.post('/parent/account/process')
 def update_parent_process_frontend():
     if 'user_id' not in session: 
         return redirect('/login')
