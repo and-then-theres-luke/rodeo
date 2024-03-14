@@ -67,10 +67,15 @@
             {% endif %} {% endwith %}
             <form
                 class="form mb-2 mt-2"
-                action="/chores/create/process"
+                action="/chores/update/process"
                 method="post"
             >
                 <!-- Hidden Inputs -->
+                <input
+                    type="hidden"
+                    name="chore_id"
+                    value="{{ one_chore.id }}"
+                />
                 <input
                     type="hidden"
                     name="user_id"

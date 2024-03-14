@@ -47,6 +47,7 @@ def view_one_chore_frontend(chore_id):
         return redirect('/')
     one_chore = chore.Chore.get_chore_by_id(chore_id)
     all_children = child.Child.get_all_children_by_parent_id(session['user_id'])
+    print(one_chore,"ONECHORE")
     if one_chore.parent_id != session['user_id']:
         return redirect('/dashboard')
     return render_template('view_one_chore.html', one_chore = one_chore, all_children = all_children)
@@ -59,17 +60,18 @@ def view_one_chore_frontend(chore_id):
 def chore_update_process_frontend():
     if 'user_id' not in session: 
         return redirect('/')
-    chore.Chore.delete_chore(request.form['chore_id'])
-# Delete Chores Controller
-
-
-
-# Update Chores Controller
-
-
+    print(request.form,"!!!!!!!!@##@#$$@@@@@@@@@@@@@@")
+    chore.Chore.edit_chore(request.form)
+    return redirect('/dashboard')
 
 # Delete Chores Controller
 
+@app.get("/chores/delete/<int:chore_id>")
+def chore_delete_frontend(chore_id):
+    if 'user_id' not in session: 
+        return redirect('/')
+    chore.Chore.delete_chore(chore_id)
+    return redirect('/dashboard')
 
 
 

@@ -157,6 +157,13 @@ class Chore:
 # UPDATE CHORE MODELS
     @classmethod
     def edit_chore(cls,data):
+        print(data)
+        # data = {'id': data['chore_id'],
+        #         'title': data['title'],
+        #         'description': data['description'],
+        #         'location': data['location'],
+        #         'day': data['day'],
+        #         'completed': data['completed']}
         query = ''' 
             UPDATE chores
             SET
@@ -165,8 +172,7 @@ class Chore:
                 location = %(location)s,
                 day = %(day)s,
                 completed = %(completed)s,
-                is_claimed = %(is_claimed)s,
-            WHERE id = %(id)s
+            WHERE id = %(chore_id)s
             ;'''
         return connectToMySQL(cls.db).query_db(query, data)
     
