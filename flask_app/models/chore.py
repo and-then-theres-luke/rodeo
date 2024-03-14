@@ -96,15 +96,16 @@ class Chore:
         result = connectToMySQL(cls.db).query_db(query,data)
         print(result)
         one_chore_data = {
-            'id' : result[0]['chores.id'],
-            'parent_id' : result[0]['chores.parent_id'],
+            'id' : result[0]['id'],
+            'parent_id' : result[0]['parent_id'],
+            'child_id' : result[0]['child_id'],
             'title' : result[0]['title'],
             'description' : result[0]['description'],
             'location' : result[0]['location'],
             'day' : result[0]['day'],
             'completed' : result[0]['completed'],
-            'created_at' : result[0]['chores.created_at'],
-            'updated_at' : result[0]['chores.updated_at']
+            'created_at' : result[0]['created_at'],
+            'updated_at' : result[0]['updated_at']
         }
         one_chore = cls(one_chore_data)
         one_child_data = {
